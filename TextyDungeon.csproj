@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <StartupObject>TextyDungeon.Program</StartupObject>
+    <ApplicationIcon>Assets\Shield.ico</ApplicationIcon>
+    <NoWin32Manifest>true</NoWin32Manifest>
+    <DebugType>embedded</DebugType>
+    <Authors>Alexandr Shamanin</Authors>
+    <Company>Akkie Group</Company>
+    <Product>TextyDungeon</Product>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Shield.ico" />
+  </ItemGroup>
+
+</Project>
