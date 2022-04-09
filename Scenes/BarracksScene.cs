@@ -33,7 +33,7 @@ internal class BarracksScene : IScene
 
     this.IsPromptDisabled = true;
 
-    this.GameInstance.SelectScene(this.GameInstance.Scenes.Dungeon, delegate () {
+    this.GameInstance.SelectScene(this.GameInstance.Scenes.Select, delegate () {
       UserInteraction.WriteDungerousLine("Выбор воинов пока что не готов, возвращайтесь сюда позже");
       UserInteraction.NewLine(2);
     });

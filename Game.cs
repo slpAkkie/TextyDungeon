@@ -54,6 +54,13 @@ internal class Game
   public readonly List<IWarrior> Army;
 
   /// <summary>
+  /// Количество мертвых войнов в гарнизоне
+  /// </summary>
+  public int QuantityOfDeadWarriors = 0;
+
+  public bool IsArmyDead { get => this.QuantityOfDeadWarriors == this.Army.Count; }
+
+  /// <summary>
   /// Генерал гарнизона
   /// </summary>
   public Leader ArmyLeader { get; private set; } = new();
@@ -85,6 +92,18 @@ internal class Game
 
     // Запуск стартовой сцены
     this.CurrentScene = this.Scenes.Start;
+  }
+
+
+  public void PrintArmyList()
+  {
+    for (int i = 0; i < this.Army.Count; i++) {
+      Console.Write($"{i + 1}. {this.Army[i].Description} (");
+      UserInteraction.WriteDungerous($"{this.Army[i].HP} HP");
+      Console.Write(") : ");
+      if (this.Army[i].IsAlive || this.IsNecromancy) UserInteraction.WriteSuccessLine("Готов к сражению");
+      else UserInteraction.WriteDungerousLine("Умер");
+    }
   }
 
 
@@ -151,6 +170,7 @@ internal class Game
         string UserInput = "";
 
         if (!this.CurrentScene.IsPromptDisabled) {
+          UserInteraction.NewLine(2);
           this.CurrentScene.Prompt();
 
           UserInteraction.PromptWelcome();
@@ -170,6 +190,6 @@ internal class Game
     }
 
     // По окончанию работы сцен, вывести сообщение об окончании игры
-    UserInteraction.EndGameMessage();
+    UserInteraction.EndGameMessage(this);
   }
 }

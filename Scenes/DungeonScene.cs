@@ -2,6 +2,7 @@
 
 using TextyDungeon.Warriors;
 using TextyDungeon.Enemies;
+using TextyDungeon.Utils;
 
 
 /// <summary>
@@ -49,27 +50,16 @@ internal class DungeonScene : IScene
 
 
   /// <summary>
-  /// Количество мертвых войнов в гарнизоне
-  /// </summary>
-  private int QuantityOfDeadWarriors = 0;
-
-
-  /// <summary>
   /// Обновление состояния сцены
   /// </summary>
   public override void Update(string UserInput)
   {
     Console.Clear();
-    int UserIntInput;
+    int? UserIntInput = Utils.ConvertToInt(UserInput, "Номер воина должен быть числом");
 
-    try {
-      UserIntInput = Convert.ToInt32(UserInput);
-    } catch (FormatException) {
-      UserInteraction.WriteErrorTop("Номер сцены должен быть числом");
-      return;
-    }
+    if (UserIntInput == null) return;
 
-    this.IndexOfChosenWarrior = (this.NumberOfChosenWarrior = UserIntInput) - 1;
+    this.IndexOfChosenWarrior = (this.NumberOfChosenWarrior = (int)UserIntInput) - 1;
 
     if (this.NumberOfChosenWarrior == 0) {
       this.GameInstance.SelectScene(null);
@@ -96,16 +86,7 @@ internal class DungeonScene : IScene
   {
     UserInteraction.WriteInfoLine(String.Format("Генерал, {0}, у вас есть армия из {1} войнов:", this.GameInstance.ArmyLeader.Name, this.GameInstance.Army.Count));
 
-    for (int i = 0; i < this.GameInstance.Army.Count; i++)
-      Console.WriteLine(
-      String.Format(
-          "{0}. {1} ({2} HP) : {3}",
-          i + 1,
-          this.GameInstance.Army[i].Description,
-          this.GameInstance.Army[i].HP,
-          this.GameInstance.Army[i].IsAlive || this.GameInstance.IsNecromancy ? "Готов к сражению" : "Умер"
-        )
-      );
+    this.GameInstance.PrintArmyList();
 
     Console.WriteLine();
     Console.WriteLine(String.Format("В вашем распоряжении {0} монет", this.GameInstance.ArmyLeader.Coins));
@@ -115,11 +96,7 @@ internal class DungeonScene : IScene
   /// <summary>
   /// Вывод сообщения (Приглашения пользователя к вводу)
   /// </summary>
-  public override void Prompt()
-  {
-    UserInteraction.NewLine(2);
-    Console.WriteLine("Выберите война, чтобы отправить его в сражение");
-  }
+  public override void Prompt() => Console.WriteLine("Выберите война, чтобы отправить его в сражение");
 
 
   /// <summary>
@@ -142,7 +119,7 @@ internal class DungeonScene : IScene
     bool WarriorDead = !this.ChosenWarrior.TakeDamage(this.DamageTaken);
 
     if (WarriorDead)
-      this.QuantityOfDeadWarriors++;
+      this.GameInstance.QuantityOfDeadWarriors++;
     else this.GameInstance.ArmyLeader.ChangeCoins(RandomEnemy.WinCost);
 
     PrintBattleResult(RandomEnemy);
@@ -183,20 +160,17 @@ internal class DungeonScene : IScene
   /// <returns>true если армия мертва и продолжение игры не возможно, в противном случае false</returns>
   private bool IsArmyDead()
   {
-    if (this.QuantityOfDeadWarriors != this.GameInstance.Army.Count || this.GameInstance.IsNecromancy)
+    if (!this.GameInstance.IsArmyDead || this.GameInstance.IsNecromancy)
       return false;
 
     UserInteraction.WriteDungerousLine("Ваша армия пала в сражении с врагом");
     Console.WriteLine("Вы опечалены таким концом");
     Console.WriteLine("Прибегнуть к Некромантии?");
 
-    this.GameInstance.IsNecromancy = UserInteraction.GetYesNo();
-
-    Console.WriteLine(
-      this.GameInstance.IsNecromancy
-      ? "Вы прибегли к Некромантии, ваша душа осквернена, но ваши войны теперь бессмертны"
-      : "Вы сохранили свою честь и пали в битве вместе со своими войнами"
-    );
+    if (this.GameInstance.IsNecromancy = UserInteraction.GetYesNo()) {
+      UserInteraction.WriteInfoLine("Вы прибегли к некромантии, ваша душа осквернена, но теперь ваши войны бессмертны");
+      UserInteraction.NewLine();
+    }
 
     return !this.GameInstance.IsNecromancy;
   }

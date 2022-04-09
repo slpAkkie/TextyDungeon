@@ -16,12 +16,13 @@ internal static class UserInteraction
   /// <summary>
   /// Получить ответ на вопрос с вариантами "Да" и "Нет"
   /// </summary>
+  /// <param name="ClearAfter">Нужно ли очищать консоль после ответа</param>
   /// <returns>true если ответ один из списка CONFIRMATION_ANSWERS</returns>
-  public static bool GetYesNo()
+  public static bool GetYesNo(bool ClearAfter = true)
   {
     PromptWelcome();
     string input = Console.ReadLine()?.Trim(' ') ?? "";
-    Console.Clear();
+    if (ClearAfter) Console.Clear();
 
     return CONFIRMATION_ANSWERS.Contains(input.ToLower());
   }
@@ -29,9 +30,15 @@ internal static class UserInteraction
   /// <summary>
   /// Сообщение о конце игры
   /// </summary>
-  public static void EndGameMessage()
+  public static void EndGameMessage(Game GameInstance)
   {
     Console.Clear();
+    if (GameInstance.IsArmyDead)
+      Console.WriteLine(
+         GameInstance.IsNecromancy
+         ? "Вы бросили путь войны, а ваши войны теперь будут вечно ходить по землям королевства в поисках битвы"
+         : "Вы сохранили свою честь и пали в битве вместе со своими войнами"
+       );
     WriteSuccessLine("Вы были хорошим предводителем. Ваши подчиненные будут помнить вас вечно");
     Console.ReadLine();
   }

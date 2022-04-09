@@ -1,5 +1,7 @@
 ﻿namespace TextyDungeon.Scenes;
 
+using TextyDungeon.Utils;
+
 
 /// <summary>
 /// Сцена выбора локации
@@ -14,7 +16,7 @@ internal class SelectScene : IScene
   /// <summary>
   /// Условие, при котором сцена продолжает обновляться
   /// </summary>
-  public override bool ContinueCondition => false;
+  public override bool ContinueCondition => true;
 
 
   /// <summary>
@@ -29,16 +31,13 @@ internal class SelectScene : IScene
   /// </summary>
   public override void Update(string UserInput)
   {
-    int UserIntInput;
+    Console.Clear();
+    int? UserIntInput = Utils.ConvertToInt(UserInput, "Номер сцены должен быть числом");
 
-    try {
-      UserIntInput = Convert.ToInt32(UserInput);
-    } catch (FormatException) {
-      UserInteraction.WriteErrorTop("Номер локации должен быть числом");
-      return;
-    }
+    if (UserIntInput == null) return;
 
-    this.GameInstance.SelectScene(this.GameInstance.Scenes.GetSceneByNumber(UserIntInput));
+    this.GameInstance.SelectScene(this.GameInstance.Scenes.GetSceneByNumber((int)UserIntInput));
+    this.CloseScene = true;
   }
 
 
@@ -56,9 +55,5 @@ internal class SelectScene : IScene
   /// <summary>
   /// Вывод сообщения (Приглашения пользователя к вводу)
   /// </summary>
-  public override void Prompt()
-  {
-    UserInteraction.NewLine(2);
-    Console.WriteLine("Выберите локацию для перехода");
-  }
+  public override void Prompt() => Console.WriteLine("Выберите локацию для перехода");
 }

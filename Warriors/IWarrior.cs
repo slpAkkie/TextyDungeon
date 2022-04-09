@@ -35,7 +35,7 @@ internal abstract class IWarrior
   public double HP
   {
     get => this._HP;
-    protected set => this._HP = value < 0 ? 0 : value;
+    protected set => this._HP = value < 0 ? 0 : value > 100 ? 100 : value;
   }
 
   /// <summary>
@@ -83,4 +83,6 @@ internal abstract class IWarrior
 
     return this.IsAlive;
   }
+
+  public void Hill(int HillAmount) => this.HP += HillAmount;
 }

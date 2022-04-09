@@ -55,14 +55,11 @@ internal class StartScene : IScene
   /// <summary>
   /// Вывод информации по сцене и возможных действий
   /// </summary>
-  public override void PrintAcions() { }
+  public override void PrintAcions() => Console.WriteLine("Добро пожаловать. У каждого великого воина должно быть запоминающееся имя");
 
 
   /// <summary>
   /// Вывод сообщения (Приглашения пользователя к вводу)
   /// </summary>
-  public override void Prompt()
-  {
-    UserInteraction.WriteInfoLine("Введите имя своего генерала");
-  }
+  public override void Prompt() => UserInteraction.WriteInfoLine("Введите имя своего генерала");
 }
