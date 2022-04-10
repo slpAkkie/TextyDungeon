@@ -14,12 +14,10 @@ internal class Game
   /// </summary>
   public bool Gameover = false;
 
-
   /// <summary>
   /// Включен ли режим некроманта
   /// </summary>
   public bool IsNecromancy = false;
-
 
   /// <summary>
   /// Список доступных сцен
@@ -29,7 +27,7 @@ internal class Game
   /// <summary>
   /// Текущая выбранная сцена
   /// </summary>
-  private IScene? CurrentScene;
+  public IScene? CurrentScene { get; private set; }
 
   /// <summary>
   /// Следующая сцена
@@ -41,7 +39,6 @@ internal class Game
   /// </summary>
   private Action? BeforeNextScene;
 
-
   /// <summary>
   /// Список войнов гарнизона
   /// </summary>
@@ -52,6 +49,9 @@ internal class Game
   /// </summary>
   public int QuantityOfDeadWarriors = 0;
 
+  /// <summary>
+  /// Пала ли вся армия
+  /// </summary>
   public bool IsArmyDead { get => this.QuantityOfDeadWarriors == this.Army.Count; }
 
   /// <summary>
@@ -81,17 +81,19 @@ internal class Game
   }
 
 
+  /// <summary>
+  /// Вывести гарнизон
+  /// </summary>
   public void PrintArmyList()
   {
     for (int i = 0; i < this.Army.Count; i++) {
       Console.Write($"{i + 1}. {this.Army[i].Name} (");
-      UserInteraction.WriteDungerous($"{this.Army[i].HP} HP");
+      UserInteraction.WriteRed($"{this.Army[i].HP} HP");
       Console.Write(") : ");
-      if (this.Army[i].IsAlive || this.IsNecromancy) UserInteraction.WriteSuccessLine("Готов к сражению");
-      else UserInteraction.WriteDungerousLine("Умер");
+      if (this.Army[i].IsAlive || this.IsNecromancy) UserInteraction.WriteGreenLine("Готов к сражению");
+      else UserInteraction.WriteRedLine("Умер");
     }
   }
-
 
   /// <summary>
   /// Переключить сцену
@@ -101,8 +103,7 @@ internal class Game
     this.NextScene = NextScene;
     this.BeforeNextScene = BeforeNextScene;
   }
-
-
+  
   /// <summary>
   /// Установить имя Генерала
   /// </summary>
@@ -113,7 +114,18 @@ internal class Game
     if (Name != null) this.ArmyLeader.Name = Name;
   }
 
+  /// <summary>
+  /// Проверить, есть ли воин под таким индексом
+  /// </summary>
+  /// <param name="WarriorIndex">Индекс воина</param>
+  /// <returns>Есть ли такой воин</returns>
+  public bool IsWarrior(int WarriorIndex) => WarriorIndex >= 0 && WarriorIndex < this.Army.Count;
 
+  /// <summary>
+  /// Проверить ввод пользователя на вхождение в игровое меню
+  /// </summary>
+  /// <param name="UserInput"></param>
+  /// <returns></returns>
   public bool CheckUserInput(string UserInput)
   {
     if (UserInput == "") {
@@ -126,20 +138,15 @@ internal class Game
     return true;
   }
 
-
   /// <summary>
   /// Запустить игру на текущей сцене
   /// </summary>
   public void StartGame()
   {
-    if (this.CurrentScene == null) {
-      UserInteraction.WriteDungerousLine("Произошла какая-то ошибка. Мы не смогли запустить игру. Пожалуйста обратитесь к разработчику");
-      return;
-    }
-
     // Запуск текущей сцены
     while (true) {
       Console.Clear();
+      // Хук до запуска следующей сцены
       if (this.BeforeNextScene != null) this.BeforeNextScene();
       this.CurrentScene.Start();
 
@@ -171,6 +178,8 @@ internal class Game
 
       if (this.NextScene == null) break;
 
+      // Хук до закрытия текущей сцены
+      this.CurrentScene.Closing();
       this.CurrentScene = this.NextScene;
       this.NextScene = null;
     }

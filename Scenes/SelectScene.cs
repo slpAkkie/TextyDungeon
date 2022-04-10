@@ -16,7 +16,7 @@ internal class SelectScene : IScene
   /// <summary>
   /// Условие, при котором сцена продолжает обновляться
   /// </summary>
-  public override bool ContinueCondition => true;
+  protected override bool ContinueCondition => true;
 
 
   /// <summary>
@@ -25,6 +25,11 @@ internal class SelectScene : IScene
   /// <param name="GameInstance">Объект игры</param>
   public SelectScene(Game GameInstance) : base(GameInstance) { }
 
+
+  /// <summary>
+  /// Запуск сцены
+  /// </summary>
+  public override void Start() { }
 
   /// <summary>
   /// Обновление состояния сцены
@@ -40,7 +45,6 @@ internal class SelectScene : IScene
     this.CloseScene = true;
   }
 
-
   /// <summary>
   /// Вывод информации по сцене и возможных действий
   /// </summary>
@@ -50,7 +54,6 @@ internal class SelectScene : IScene
     foreach (IScene Scene in this.GameInstance.Scenes.List)
       Console.WriteLine($"{++SceneNumber}. {Scene.Name}");
   }
-
 
   /// <summary>
   /// Вывод сообщения (Приглашения пользователя к вводу)

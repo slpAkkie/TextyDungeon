@@ -14,7 +14,7 @@ internal class ArmoryScene : IScene
   /// <summary>
   /// Условие, при котором сцена продолжает обновляться
   /// </summary>
-  public override bool ContinueCondition => false;
+  protected override bool ContinueCondition => false;
 
 
   /// <summary>
@@ -29,28 +29,23 @@ internal class ArmoryScene : IScene
   /// </summary>
   public override void Start()
   {
-    base.Start();
-
     this.IsPromptDisabled = true;
 
     this.GameInstance.SelectScene(this.GameInstance.Scenes.Select, delegate () {
-      UserInteraction.WriteDungerousLine("Выбор снаряжения пока что не готов, возвращайтесь сюда позже");
+      UserInteraction.WriteRedLine("Выбор снаряжения пока что не готов, возвращайтесь сюда позже");
       UserInteraction.NewLine(2);
     });
   }
-
 
   /// <summary>
   /// Обновление состояния сцены
   /// </summary>
   public override void Update(string UserInput) { }
 
-
   /// <summary>
   /// Вывод информации по сцене и возможных действий
   /// </summary>
   public override void PrintAcions() { }
-
 
   /// <summary>
   /// Вывод сообщения (Приглашения пользователя к вводу)

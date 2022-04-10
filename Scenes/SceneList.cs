@@ -6,8 +6,6 @@
 /// </summary>
 internal class SceneList
 {
-  private Game GameInstance;
-
   /// <summary>
   /// Список сцен, который может быть выведен пользователю как один из вариантов локаций
   /// </summary>
@@ -21,6 +19,9 @@ internal class SceneList
   public IScene Start { get; private set; }
   public IScene Select { get; private set; }
 
+  /// <summary>
+  /// Список достпуных сцен для переключения пользователем
+  /// </summary>
   public IEnumerable<IScene> List
   {
     get {
@@ -33,21 +34,11 @@ internal class SceneList
 
 
   /// <summary>
-  /// Получить сцену по ее человекопонятному номеру
-  /// </summary>
-  /// <param name="SceneNumber">Номер сцены от 1 до количества сцен</param>
-  /// <returns>Запрошенная сцена</returns>
-  public IScene GetSceneByNumber(int SceneNumber) => this.EnumerableScenes[SceneNumber - 1];
-
-
-  /// <summary>
   /// Инициализирует сцены
   /// </summary>
   /// <param name="GameInstance">Объект игры</param>
   public SceneList(Game GameInstance)
   {
-    this.GameInstance = GameInstance;
-
     // Инициализация сцен
     this.EnumerableScenes = new List<IScene>
     {
@@ -60,4 +51,12 @@ internal class SceneList
     this.Start = new StartScene(GameInstance);
     this.Select = new SelectScene(GameInstance);
   }
+
+
+  /// <summary>
+  /// Получить сцену по ее человекопонятному номеру
+  /// </summary>
+  /// <param name="SceneNumber">Номер сцены от 1 до количества сцен</param>
+  /// <returns>Запрошенная сцена</returns>
+  public IScene GetSceneByNumber(int SceneNumber) => this.EnumerableScenes[SceneNumber - 1];
 }

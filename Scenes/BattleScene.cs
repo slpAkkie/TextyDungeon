@@ -18,7 +18,7 @@ internal class BattleScene : IScene
   /// <summary>
   /// Условие, при котором сцена продолжает обновляться
   /// </summary>
-  public override bool ContinueCondition => !this.IsArmyDead() && !this.GameInstance.Gameover && this.Enemy.IsAlive;
+  protected override bool ContinueCondition => !this.IsArmyDead() && !this.GameInstance.Gameover && this.Enemy.IsAlive;
 
   /// <summary>
   /// Индекс выбранного война в списке
@@ -39,6 +39,8 @@ internal class BattleScene : IScene
   /// Враг с которым будет идти битва
   /// </summary>
   private IEnemy Enemy;
+
+  private bool IsWon { get => this.Enemy.IsDead; }
 
   /// <summary>
   /// Урон полученный в последней битве
@@ -68,6 +70,11 @@ internal class BattleScene : IScene
 
 
   /// <summary>
+  /// Запуск сцены
+  /// </summary>
+  public override void Start() { }
+
+  /// <summary>
   /// Обновление состояния сцены
   /// </summary>
   public override void Update(string UserInput)
@@ -80,11 +87,11 @@ internal class BattleScene : IScene
     this.IndexOfChosenWarrior = (this.NumberOfChosenWarrior = (int)UserIntInput) - 1;
 
     if (this.IndexOfChosenWarrior < 0)
-      UserInteraction.WriteDungerousLine($"Нельзя выбрать {this.NumberOfChosenWarrior} война");
-    else if (this.NumberOfChosenWarrior > this.GameInstance.Army.Count)
-      UserInteraction.WriteDungerousLine("Ваша армия не настолько большая. Такого война нет");
+      UserInteraction.WriteRedLine($"Нельзя выбрать {this.NumberOfChosenWarrior} война");
+    else if (this.IndexOfChosenWarrior >= this.GameInstance.Army.Count)
+      UserInteraction.WriteRedLine("Ваша армия не настолько большая. Такого война нет");
     else if (this.ChosenWarrior.IsDead && !this.GameInstance.IsNecromancy)
-      UserInteraction.WriteDungerousLine("К сожалению этот воин уже погиб, он не может больше сражаться. Упокой Господь его душу");
+      UserInteraction.WriteRedLine("К сожалению этот воин уже погиб, он не может больше сражаться. Упокой Господь его душу");
     else
       this.Fight();
 
@@ -92,18 +99,17 @@ internal class BattleScene : IScene
     Console.WriteLine();
   }
 
-
   /// <summary>
   /// Вывод информации по сцене и возможных действий
   /// </summary>
   public override void PrintAcions()
   {
     Console.Write("Напротив вас стоит: ");
-    UserInteraction.WriteInfo(this.Enemy.Name);
+    UserInteraction.WriteBlue(this.Enemy.Name);
     Console.Write(" (HP: ");
-    UserInteraction.WriteDungerous(this.Enemy.HP.ToString());
+    UserInteraction.WriteRed(this.Enemy.HP.ToString());
     Console.Write(", Урон: ");
-    UserInteraction.WriteDungerous($"{this.Enemy.DamageRange.MinValue}-{this.Enemy.DamageRange.MaxValue}");
+    UserInteraction.WriteRed($"{this.Enemy.DamageRange.MinValue}-{this.Enemy.DamageRange.MaxValue}");
     Console.WriteLine(")");
 
     UserInteraction.NewLine();
@@ -112,12 +118,10 @@ internal class BattleScene : IScene
     this.GameInstance.PrintArmyList();
   }
 
-
   /// <summary>
   /// Вывод сообщения (Приглашения пользователя к вводу)
   /// </summary>
   public override void Prompt() => Console.WriteLine("Выберите война, чтобы отправить его в сражение");
-
 
   /// <summary>
   /// Отправить выбранного война в битву
@@ -127,18 +131,18 @@ internal class BattleScene : IScene
     this.DamageTaken = this.GameInstance.IsNecromancy ? 0 : this.Enemy.Damage;
     this.DamageGiven = this.ChosenWarrior.Damage;
     bool WarriorDead = !this.ChosenWarrior.TakeDamage(this.DamageTaken);
-    bool EnemyDead = !this.Enemy.TakeDamage(this.DamageGiven);
+    this.Enemy.TakeDamage(this.DamageGiven);
 
     if (WarriorDead)
       this.GameInstance.QuantityOfDeadWarriors++;
 
-    if (EnemyDead) {
+    if (this.IsWon) {
       int WinCost = this.Enemy.WinCost;
       this.GameInstance.ArmyLeader.ChangeCoins(WinCost);
       this.GameInstance.SelectScene(this.GameInstance.Scenes.Dungeon, delegate() {
-        UserInteraction.WriteSuccess("Враг побежден.");
+        UserInteraction.WriteGreen("Враг побежден.");
         Console.Write(" Вы получили ");
-        UserInteraction.WriteSuccess($"{WinCost} монет");
+        UserInteraction.WriteGreen($"{WinCost} монет");
         Console.Write(".");
         this.GameInstance.ArmyLeader.PrintCoins();
         UserInteraction.NewLine();
@@ -148,8 +152,13 @@ internal class BattleScene : IScene
     }
 
     PrintFightResult(this.Enemy);
+    if ((this.GameInstance.Scenes.Dungeon as DungeonScene).IsEnemiesDead) {
+      UserInteraction.NewLine();    
+      Console.WriteLine("Все враги в подземелье повержены");
+      UserInteraction.WriteBlueLine("Нажмите для продолжения...");
+      Console.ReadLine();
+    }
   }
-
 
   /// <summary>
   /// Выводит информацию о последней битве
@@ -158,19 +167,18 @@ internal class BattleScene : IScene
   private void PrintFightResult(IEnemy TheEnemy)
   {
     Console.Write($"Воин номер {this.IndexOfChosenWarrior + 1} сразился с ");
-    UserInteraction.WriteDungerous($"\"{TheEnemy.Name}\"");
+    UserInteraction.WriteRed($"\"{TheEnemy.Name}\"");
     Console.Write(". Нанесено ");
-    UserInteraction.WriteDungerous($"{this.DamageGiven}");
+    UserInteraction.WriteRed($"{this.DamageGiven}");
     Console.Write(" урона, получено ");
-    UserInteraction.WriteDungerous($"{this.DamageTaken}");
+    UserInteraction.WriteRed($"{this.DamageTaken}");
     Console.WriteLine($" урона.");
 
-    if (this.Enemy.IsDead)
-      UserInteraction.WriteSuccessLine("Воин одержал победу");
+    if (this.IsWon)
+      UserInteraction.WriteGreenLine("Воин одержал победу");
     else
-      UserInteraction.WriteInfoLine("Враг все еще жив. Выберите кто будет атаковать следующим");
+      UserInteraction.WriteBlueLine("Враг все еще жив. Выберите кто будет атаковать следующим");
   }
-
 
   /// <summary>
   /// Проверяет пала ли вся армия и выводит сообщение об этом.
@@ -181,15 +189,24 @@ internal class BattleScene : IScene
     if (!this.GameInstance.IsArmyDead || this.GameInstance.IsNecromancy)
       return false;
 
-    UserInteraction.WriteDungerousLine("Ваша армия пала в сражении с врагом");
+    UserInteraction.WriteRedLine("Ваша армия пала в сражении с врагом");
     Console.WriteLine("Вы опечалены таким концом");
     Console.WriteLine("Прибегнуть к Некромантии?");
 
     if (this.GameInstance.IsNecromancy = UserInteraction.GetYesNo()) {
-      UserInteraction.WriteInfoLine("Вы прибегли к некромантии, ваша душа осквернена, но теперь ваши войны бессмертны");
+      UserInteraction.WriteBlueLine("Вы прибегли к некромантии, ваша душа осквернена, но теперь ваши войны бессмертны");
       UserInteraction.NewLine();
     }
 
     return !this.GameInstance.IsNecromancy;
+  }
+
+  /// <summary>
+  /// Выход со сцены
+  /// </summary>
+  public override void Closing()
+  {
+    if (!this.IsWon || this.IsWon && this.Dungeon.IsEnemiesDead) this.Dungeon.PreserveEnemyRefill = false;
+    else this.Dungeon.PreserveEnemyRefill = true;
   }
 }

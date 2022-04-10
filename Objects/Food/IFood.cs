@@ -28,4 +28,17 @@ internal abstract class IFood : IGameObject
     this.HillAmount = HillAmount;
     this.Cost = Cost;
   }
+
+  /// <summary>
+  /// Вывести информацию о еде
+  /// </summary>
+  public void Print()
+  {
+    UserInteraction.WriteBlue(this.Name);
+    Console.Write(" / Восстанавливает ");
+    UserInteraction.WriteGreen($"{this.HillAmount} HP");
+    Console.Write(", стоимость ");
+    UserInteraction.WriteGreen($"{this.Cost} золотых монет");
+    Console.WriteLine($". ({this.Description})");
+  }
 }

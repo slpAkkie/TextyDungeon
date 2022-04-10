@@ -14,8 +14,11 @@ internal class StartScene : IScene
   /// <summary>
   /// Условие, при котором сцена продолжает обновляться
   /// </summary>
-  public override bool ContinueCondition => !this.Confirmation;
+  protected override bool ContinueCondition => !this.Confirmation;
 
+  /// <summary>
+  /// Согласие на установку имени
+  /// </summary>
   private bool Confirmation = false;
 
 
@@ -28,6 +31,11 @@ internal class StartScene : IScene
     this.IsMenuDisabled = true;
   }
 
+
+  /// <summary>
+  /// Запуск сцены
+  /// </summary>
+  public override void Start() { }
 
   /// <summary>
   /// Обновление состояния сцены
@@ -43,7 +51,7 @@ internal class StartScene : IScene
     Console.Clear();
     Console.WriteLine(String.Format("Имя Генерала будет установлена как: {0}", UserInput));
     UserInteraction.NewLine();
-    UserInteraction.WriteInfoLine("Согласны? (Да | Нет)");
+    UserInteraction.WriteBlueLine("Согласны? (Да | Нет)");
     if (!(this.Confirmation = UserInteraction.GetYesNo())) return;
 
 
@@ -51,15 +59,13 @@ internal class StartScene : IScene
     this.GameInstance.SelectScene(this.GameInstance.Scenes.Dungeon);
   }
 
-
   /// <summary>
   /// Вывод информации по сцене и возможных действий
   /// </summary>
   public override void PrintAcions() => Console.WriteLine("Добро пожаловать. У каждого великого воина должно быть запоминающееся имя");
 
-
   /// <summary>
   /// Вывод сообщения (Приглашения пользователя к вводу)
   /// </summary>
-  public override void Prompt() => UserInteraction.WriteInfoLine("Введите имя своего генерала");
+  public override void Prompt() => UserInteraction.WriteBlueLine("Введите имя своего генерала");
 }

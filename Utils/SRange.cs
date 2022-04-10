@@ -22,6 +22,12 @@ internal struct SRange
   /// </summary>
   public int Random { get => new Random().Next(MinValue, MaxValue); }
 
+
+  /// <summary>
+  /// Инициализация диапазона
+  /// </summary>
+  /// <param name="Min">Минимальное значение</param>
+  /// <param name="Max">Максимальное значение</param>
   public SRange(int Min, int Max)
   {
     this.MinValue = Min;

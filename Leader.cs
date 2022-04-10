@@ -51,7 +51,7 @@ internal class Leader
   public void PrintCoins()
   {
     Console.Write("У вас в распоряжении ");
-    UserInteraction.WriteSuccess($"{this.Coins} монет");
+    UserInteraction.WriteGreen($"{this.Coins} монет");
     Console.WriteLine(".");
   }
 }

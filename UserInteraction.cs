@@ -13,6 +13,7 @@ internal static class UserInteraction
   /// </summary>
   private static readonly string[] CONFIRMATION_ANSWERS = { "y", "yes", "д", "да" };
 
+
   /// <summary>
   /// Получить ответ на вопрос с вариантами "Да" и "Нет"
   /// </summary>
@@ -39,7 +40,7 @@ internal static class UserInteraction
          ? "Вы бросили путь войны, а ваши войны теперь будут вечно ходить по землям королевства в поисках битвы"
          : "Вы сохранили свою честь и пали в битве вместе со своими войнами"
        );
-    WriteSuccessLine("Вы были хорошим предводителем. Ваши подчиненные будут помнить вас вечно");
+    WriteGreenLine("Вы были хорошим предводителем. Ваши подчиненные будут помнить вас вечно");
     Console.ReadLine();
   }
 
@@ -60,38 +61,37 @@ internal static class UserInteraction
   /// Вывести строку с оформлением успешного действия
   /// </summary>
   /// <param name="Str">Строка для вывода</param>
-  public static void WriteSuccessLine(string Str) => WriteColorLine(Str, ConsoleColor.Green);
+  public static void WriteGreenLine(string Str) => WriteColorLine(Str, ConsoleColor.Green);
 
   /// <summary>
   /// Вывести строку с оформлением успешного действия
   /// </summary>
   /// <param name="Str">Строка для вывода</param>
-  public static void WriteSuccess(string Str) => WriteColorLine(Str, ConsoleColor.Green, false);
+  public static void WriteGreen(string Str) => WriteColorLine(Str, ConsoleColor.Green, false);
 
   /// <summary>
   /// Вывести строку с оформлением ошибки
   /// </summary>
   /// <param name="Str">Строка для вывода</param>
-  public static void WriteDungerousLine(string Str) => WriteColorLine(Str, ConsoleColor.Red);
+  public static void WriteRedLine(string Str) => WriteColorLine(Str, ConsoleColor.Red);
 
   /// <summary>
   /// Вывести строку с оформлением ошибки
   /// </summary>
   /// <param name="Str">Строка для вывода</param>
-  public static void WriteDungerous(string Str) => WriteColorLine(Str, ConsoleColor.Red, false);
+  public static void WriteRed(string Str) => WriteColorLine(Str, ConsoleColor.Red, false);
 
   /// <summary>
   /// Вывести строку с оформлением информационного сообщения
   /// </summary>
   /// <param name="Str">Строка для вывода</param>
-  public static void WriteInfoLine(string Str) => WriteColorLine(Str, ConsoleColor.Blue);
+  public static void WriteBlueLine(string Str) => WriteColorLine(Str, ConsoleColor.Blue);
 
   /// <summary>
   /// Вывести строку с оформлением информационного сообщения
   /// </summary>
   /// <param name="Str">Строка для вывода</param>
-  public static void WriteInfo(string Str) => WriteColorLine(Str, ConsoleColor.Blue, false);
-
+  public static void WriteBlue(string Str) => WriteColorLine(Str, ConsoleColor.Blue, false);
 
   /// <summary>
   /// Вывести строку с оформлением ошибки и двумя пустыми строками снизу
@@ -99,7 +99,7 @@ internal static class UserInteraction
   /// <param name="Str">Строка для вывода</param>
   public static void WriteErrorTop(string Str)
   {
-    WriteDungerousLine(Str);
+    WriteRedLine(Str);
     NewLine(2);
   }
 
@@ -112,5 +112,5 @@ internal static class UserInteraction
   /// <summary>
   /// Вывести приглашение к вводу
   /// </summary>
-  public static void PromptWelcome() => WriteSuccess(">> ");
+  public static void PromptWelcome() => WriteGreen(">> ");
 }

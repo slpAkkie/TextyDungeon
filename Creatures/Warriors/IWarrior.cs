@@ -1,6 +1,9 @@
 ﻿namespace TextyDungeon.Creatures.Warriors;
 
 
+/// <summary>
+/// Базовый класс воинов
+/// </summary>
 internal abstract class IWarrior : ICreature
 {
   /// <summary>
@@ -44,5 +47,9 @@ internal abstract class IWarrior : ICreature
     return this.IsAlive;
   }
 
+  /// <summary>
+  /// Вылечить воина
+  /// </summary>
+  /// <param name="HillAmount">Количество HP для восстановления</param>
   public void Hill(int HillAmount) => this.HP += HillAmount;
 }

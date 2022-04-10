@@ -20,8 +20,5 @@ internal abstract class IWeapon : IEquipment
   /// <param name="Name">Название оружия</param>
   /// <param name="Description">Описание оружия</param>
   /// <param name="DamageRange">Диапазон возможного урона</param>
-  public IWeapon(string Name, string Description, SRange DamageRange) : base(Name, Description)
-  {
-    this.DamageRange = DamageRange;
-  }
+  public IWeapon(string Name, string Description, SRange DamageRange) : base(Name, Description) => this.DamageRange = DamageRange;
 }

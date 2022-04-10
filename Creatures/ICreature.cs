@@ -29,7 +29,6 @@ internal abstract class ICreature : IGameObject
   /// </summary>
   public bool IsDead { get => !this.IsAlive; }
 
-
   /// <summary>
   /// (Внутренний) Показатель брони воина
   /// </summary>
@@ -44,5 +43,11 @@ internal abstract class ICreature : IGameObject
     protected set => this._HP = value < MIN_HP ? MIN_HP : value > MAX_HP ? MAX_HP : Math.Round(value, 2);
   }
 
+
+  /// <summary>
+  /// Инициализировать существо
+  /// </summary>
+  /// <param name="Name">Название существа</param>
+  /// <param name="Description">Описание</param>
   public ICreature(string Name, string Description) : base(Name, Description) => this.HP = MAX_HP;
 }

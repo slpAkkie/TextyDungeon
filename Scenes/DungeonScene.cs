@@ -9,6 +9,9 @@ using TextyDungeon.Utils;
 /// </summary>
 internal class DungeonScene : IScene
 {
+  /// <summary>
+  /// Базовая цена за зачистку
+  /// </summary>
   private const int BASE_WIN_COST = 10;
 
   /// <summary>
@@ -19,12 +22,17 @@ internal class DungeonScene : IScene
   /// <summary>
   /// Условие, при котором сцена продолжает обновляться
   /// </summary>
-  public override bool ContinueCondition => this.AvailableEnemies.Count > 0;
+  protected override bool ContinueCondition => !this.IsEnemiesDead;
 
   /// <summary>
   /// Приостановить сцену (Не менять врагов при запуске)
   /// </summary>
-  private bool PreserveEnemyRefill = false;
+  public bool PreserveEnemyRefill = false;
+
+  /// <summary>
+  /// Мертвы ли все враги
+  /// </summary>
+  public bool IsEnemiesDead { get => this.AvailableEnemies.Count == 0; }
 
   /// <summary>
   /// Список для создания противников
@@ -59,19 +67,17 @@ internal class DungeonScene : IScene
   /// </summary>
   public override void Start()
   {
-    base.Start();
+    if (!this.PreserveEnemyRefill) {
+      this.AvailableEnemies.Clear();
+      for (int i = 0; i < 3; i++)
+        this.AvailableEnemies.Add(this.EnemiesCreatorList[new Random().Next(0, this.EnemiesCreatorList.Count)]());
 
-    if (this.PreserveEnemyRefill && this.AvailableEnemies.Count > 0) return;
+      this.WinCost = BASE_WIN_COST;
+      this.AvailableEnemies.ForEach(Enemy => this.WinCost += Enemy.WinCost);
+    }
+
     this.PreserveEnemyRefill = false;
-
-    this.AvailableEnemies.Clear();
-    for (int i = 0; i < 3; i++)
-      this.AvailableEnemies.Add(this.EnemiesCreatorList[new Random().Next(0, this.EnemiesCreatorList.Count)]());
-
-    this.WinCost = BASE_WIN_COST;
-    this.AvailableEnemies.ForEach(Enemy => this.WinCost += Enemy.WinCost);
   }
-
 
   /// <summary>
   /// Обновление состояния сцены
@@ -85,32 +91,30 @@ internal class DungeonScene : IScene
     UserIntInput--;
 
     if (UserIntInput < 0 || UserIntInput >= this.AvailableEnemies.Count) {
-      UserInteraction.WriteDungerousLine($"Вы не можете выбрать {UserIntInput + 1} врага");
+      UserInteraction.WriteRedLine($"Вы не можете выбрать {UserIntInput + 1} врага");
       return;
     }
 
     BattleScene Battle = new(this.GameInstance, this, this.AvailableEnemies[(int)UserIntInput]);
     this.GameInstance.SelectScene(Battle);
-    this.PreserveEnemyRefill = true;
     this.CloseScene = true;
   }
 
+  /// <summary>
+  /// Убрать побежденного врага
+  /// </summary>
+  /// <param name="Enemy">Поверженный враг</param>
   public void RemoveEnemy(IEnemy Enemy)
   {
     this.AvailableEnemies.Remove(Enemy);
 
     if (this.AvailableEnemies.Count == 0) {
-      int? WinCost = null;
+      this.GameInstance.ArmyLeader.ChangeCoins((int)this.WinCost);
 
-      if (this.WinCost != null) {
-        WinCost = this.WinCost;
-        this.GameInstance.ArmyLeader.ChangeCoins((int)WinCost);
-      }
-
-      this.GameInstance.SelectScene(this, delegate() {
-        UserInteraction.WriteSuccessLine("Подземелье зачищено");
+      this.GameInstance.SelectScene(this, delegate () {
+        UserInteraction.WriteGreenLine("Подземелье зачищено");
         Console.Write("Награда за прохождение подземелья: ");
-        UserInteraction.WriteSuccess($"{WinCost ?? 0}");
+        UserInteraction.WriteGreen($"{this.WinCost}");
         Console.WriteLine(" монет.");
         this.GameInstance.ArmyLeader.PrintCoins();
 
@@ -121,7 +125,6 @@ internal class DungeonScene : IScene
     }
   }
 
-
   /// <summary>
   /// Вывести список доступных сейчас врагов
   /// </summary>
@@ -129,15 +132,14 @@ internal class DungeonScene : IScene
   {
     for (int i = 0; i < this.AvailableEnemies.Count; i++) {
       Console.Write($"{i + 1}. ");
-      UserInteraction.WriteInfo(this.AvailableEnemies[i].Name);
+      UserInteraction.WriteBlue(this.AvailableEnemies[i].Name);
       Console.Write(" (HP: ");
-      UserInteraction.WriteDungerous(this.AvailableEnemies[i].HP.ToString());
+      UserInteraction.WriteRed(this.AvailableEnemies[i].HP.ToString());
       Console.Write(", Урон: ");
-      UserInteraction.WriteDungerous($"{this.AvailableEnemies[i].DamageRange.MinValue}-{this.AvailableEnemies[i].DamageRange.MaxValue}");
+      UserInteraction.WriteRed($"{this.AvailableEnemies[i].DamageRange.MinValue}-{this.AvailableEnemies[i].DamageRange.MaxValue}");
       Console.WriteLine(")");
     }
   }
-
 
   /// <summary>
   /// Вывод информации по сцене и возможных действий

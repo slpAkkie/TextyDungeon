@@ -18,8 +18,5 @@ internal abstract class IArmor : IEquipment
   /// <param name="Name">Название брони</param>
   /// <param name="Description">Описание брони</param>
   /// <param name="ProtectionRate">Показатель зашиты брони</param>
-  public IArmor(string Name, string Description, int ProtectionRate) : base(Name, Description)
-  {
-    this.ProtectionRate = ProtectionRate;
-  }
+  public IArmor(string Name, string Description, int ProtectionRate) : base(Name, Description) => this.ProtectionRate = ProtectionRate;
 }
