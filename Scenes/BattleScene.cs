@@ -1,6 +1,6 @@
 ﻿namespace TextyDungeon.Scenes;
 
-using TextyDungeon.Creatures;
+using TextyDungeon.Creatures.Enemies;
 using TextyDungeon.Utils;
 
 

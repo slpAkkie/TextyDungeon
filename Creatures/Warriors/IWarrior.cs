@@ -1,4 +1,4 @@
-﻿namespace TextyDungeon.Creatures;
+﻿namespace TextyDungeon.Creatures.Warriors;
 
 
 internal abstract class IWarrior : ICreature

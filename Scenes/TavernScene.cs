@@ -1,7 +1,7 @@
 ﻿namespace TextyDungeon.Scenes;
 
 using TextyDungeon.Objects.Food;
-using TextyDungeon.Creatures;
+using TextyDungeon.Creatures.Warriors;
 using TextyDungeon.Utils;
 
 

@@ -1,4 +1,4 @@
-﻿namespace TextyDungeon.Creatures;
+﻿namespace TextyDungeon.Creatures.Enemies;
 
 using TextyDungeon.Utils;
 

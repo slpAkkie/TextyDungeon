@@ -1,6 +1,5 @@
 ﻿namespace TextyDungeon;
 
-using TextyDungeon.Creatures;
 using TextyDungeon.Creatures.Warriors;
 using TextyDungeon.Scenes;
 

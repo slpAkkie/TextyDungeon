@@ -1,10 +1,12 @@
 ﻿namespace TextyDungeon.Creatures;
 
+using TextyDungeon.Objects;
+
 
 /// <summary>
 /// Базовый класс живых существ
 /// </summary>
-internal abstract class ICreature
+internal abstract class ICreature : IGameObject
 {
   /// <summary>
   /// Максимальное значение злоровья
@@ -29,16 +31,6 @@ internal abstract class ICreature
 
 
   /// <summary>
-  /// Описание воина
-  /// </summary>
-  public string Name;
-
-  /// <summary>
-  /// Описание воина
-  /// </summary>
-  public string Description;
-
-  /// <summary>
   /// (Внутренний) Показатель брони воина
   /// </summary>
   private double _HP;
@@ -52,10 +44,5 @@ internal abstract class ICreature
     protected set => this._HP = value < MIN_HP ? MIN_HP : value > MAX_HP ? MAX_HP : Math.Round(value, 2);
   }
 
-  public ICreature(string Name, string Description)
-  {
-    this.Name = Name;
-    this.Description = Description;
-    this.HP = MAX_HP;
-  }
+  public ICreature(string Name, string Description) : base(Name, Description) => this.HP = MAX_HP;
 }
