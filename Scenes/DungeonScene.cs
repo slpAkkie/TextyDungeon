@@ -1,6 +1,7 @@
 ﻿namespace TextyDungeon.Scenes;
 
-using TextyDungeon.Enemies;
+using TextyDungeon.Creatures;
+using TextyDungeon.Creatures.Enemies;
 using TextyDungeon.Utils;
 
 
@@ -9,6 +10,8 @@ using TextyDungeon.Utils;
 /// </summary>
 internal class DungeonScene : IScene
 {
+  private const int BASE_WIN_COST = 10;
+
   /// <summary>
   /// Название сцены
   /// </summary>
@@ -17,12 +20,18 @@ internal class DungeonScene : IScene
   /// <summary>
   /// Условие, при котором сцена продолжает обновляться
   /// </summary>
-  public override bool ContinueCondition => true;
+  public override bool ContinueCondition => this.AvailableEnemies.Count > 0;
+
+  /// <summary>
+  /// Приостановить сцену (Не менять врагов при запуске)
+  /// </summary>
+  private bool PreserveEnemyRefill = false;
 
   /// <summary>
   /// Список для создания противников
   /// </summary>
-  private readonly List<Func<IEnemy>> EnemiesCreatorList = new() {
+  private readonly List<Func<IEnemy>> EnemiesCreatorList = new()
+  {
     () => new Skeleton(),
     () => new Zombie(),
     () => new Dragon(),
@@ -33,6 +42,11 @@ internal class DungeonScene : IScene
   /// </summary>
   private List<IEnemy> AvailableEnemies = new();
 
+  /// <summary>
+  /// Награда за прохождение подземелья
+  /// </summary>
+  private int? WinCost;
+
 
   /// <summary>
   /// Инициализировать сцену
@@ -40,11 +54,23 @@ internal class DungeonScene : IScene
   /// <param name="GameInstance">Объект игры</param>
   public DungeonScene(Game GameInstance) : base(GameInstance) { }
 
+
+  /// <summary>
+  /// Запуск сцены
+  /// </summary>
   public override void Start()
   {
+    base.Start();
+
+    if (this.PreserveEnemyRefill && this.AvailableEnemies.Count > 0) return;
+    this.PreserveEnemyRefill = false;
+
     this.AvailableEnemies.Clear();
     for (int i = 0; i < 3; i++)
       this.AvailableEnemies.Add(this.EnemiesCreatorList[new Random().Next(0, this.EnemiesCreatorList.Count)]());
+
+    this.WinCost = BASE_WIN_COST;
+    this.AvailableEnemies.ForEach(Enemy => this.WinCost += Enemy.WinCost);
   }
 
 
@@ -64,9 +90,36 @@ internal class DungeonScene : IScene
       return;
     }
 
-    BattleScene Battle = new(this.GameInstance, this.AvailableEnemies[(int)UserIntInput]);
+    BattleScene Battle = new(this.GameInstance, this, this.AvailableEnemies[(int)UserIntInput]);
     this.GameInstance.SelectScene(Battle);
+    this.PreserveEnemyRefill = true;
     this.CloseScene = true;
+  }
+
+  public void RemoveEnemy(IEnemy Enemy)
+  {
+    this.AvailableEnemies.Remove(Enemy);
+
+    if (this.AvailableEnemies.Count == 0) {
+      int? WinCost = null;
+
+      if (this.WinCost != null) {
+        WinCost = this.WinCost;
+        this.GameInstance.ArmyLeader.ChangeCoins((int)WinCost);
+      }
+
+      this.GameInstance.SelectScene(this, delegate() {
+        UserInteraction.WriteSuccessLine("Подземелье зачищено");
+        Console.Write("Награда за прохождение подземелья: ");
+        UserInteraction.WriteSuccess($"{WinCost ?? 0}");
+        Console.WriteLine(" монет.");
+        this.GameInstance.ArmyLeader.PrintCoins();
+
+        Console.WriteLine("Идем в следующее подземелье");
+        UserInteraction.NewLine();
+      });
+      this.CloseScene = true;
+    }
   }
 
 
@@ -75,8 +128,15 @@ internal class DungeonScene : IScene
   /// </summary>
   public void PrintAvailableEnemies()
   {
-    for (int i = 0; i < this.AvailableEnemies.Count; i++)
-      Console.WriteLine($"{i + 1}. {this.AvailableEnemies[i].Name}");
+    for (int i = 0; i < this.AvailableEnemies.Count; i++) {
+      Console.Write($"{i + 1}. ");
+      UserInteraction.WriteInfo(this.AvailableEnemies[i].Name);
+      Console.Write(" (HP: ");
+      UserInteraction.WriteDungerous(this.AvailableEnemies[i].HP.ToString());
+      Console.Write(", Урон: ");
+      UserInteraction.WriteDungerous($"{this.AvailableEnemies[i].DamageRange.MinValue}-{this.AvailableEnemies[i].DamageRange.MaxValue}");
+      Console.WriteLine(")");
+    }
   }
 
 

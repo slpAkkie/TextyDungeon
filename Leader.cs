@@ -44,4 +44,14 @@ internal class Leader
   /// <param name="Coins">Дельта изменения</param>
   /// <returns>Новое количество монет</returns>
   public int ChangeCoins(int Coins) => this.Coins += Coins;
+
+  /// <summary>
+  /// Вывести количество монет
+  /// </summary>
+  public void PrintCoins()
+  {
+    Console.Write("У вас в распоряжении ");
+    UserInteraction.WriteSuccess($"{this.Coins} монет");
+    Console.WriteLine(".");
+  }
 }

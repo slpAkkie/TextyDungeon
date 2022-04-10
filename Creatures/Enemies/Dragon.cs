@@ -1,4 +1,6 @@
-﻿namespace TextyDungeon.Enemies;
+﻿namespace TextyDungeon.Creatures.Enemies;
+
+using TextyDungeon.Utils;
 
 
 /// <summary>
@@ -9,5 +11,5 @@ internal class Dragon : IEnemy
   /// <summary>
   /// Инициализация противника
   /// </summary>
-  public Dragon() : base("Дракон", 55, 85) { }
+  public Dragon() : base("Дракон", "", new SRange(55, 85)) { }
 }

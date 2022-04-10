@@ -1,4 +1,6 @@
-﻿namespace TextyDungeon.Enemies;
+﻿namespace TextyDungeon.Creatures.Enemies;
+
+using TextyDungeon.Utils;
 
 
 /// <summary>
@@ -9,5 +11,5 @@ internal class Skeleton : IEnemy
   /// <summary>
   /// Инициализация противника
   /// </summary>
-  public Skeleton() : base("Скелет", 10, 25) { }
+  public Skeleton() : base("Скелет", "", new SRange(10, 25)) { }
 }

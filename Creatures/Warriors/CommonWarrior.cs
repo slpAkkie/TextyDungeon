@@ -1,4 +1,4 @@
-﻿namespace TextyDungeon.Warriors;
+﻿namespace TextyDungeon.Creatures.Warriors;
 
 
 /// <summary>
@@ -9,5 +9,5 @@ internal class CommonWarrior : IWarrior
   /// <summary>
   /// Инициализация воина с установленными параметрами
   /// </summary>
-  public CommonWarrior() : base("Обычный воин", 1.0) { }
+  public CommonWarrior() : base("Обычный воин", "", 1.0) { }
 }

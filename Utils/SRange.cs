@@ -21,4 +21,10 @@ internal struct SRange
   /// Получить случайное число из диапазона
   /// </summary>
   public int Random { get => new Random().Next(MinValue, MaxValue); }
+
+  public SRange(int Min, int Max)
+  {
+    this.MinValue = Min;
+    this.MaxValue = Max;
+  }
 }

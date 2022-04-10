@@ -1,4 +1,6 @@
-﻿namespace TextyDungeon.Enemies;
+﻿namespace TextyDungeon.Creatures.Enemies;
+
+using TextyDungeon.Utils;
 
 
 /// <summary>
@@ -9,5 +11,5 @@ internal class Zombie : IEnemy
   /// <summary>
   /// Инициализация противника
   /// </summary>
-  public Zombie() : base("Зомби", 20, 35) { }
+  public Zombie() : base("Зомби", "", new SRange(20, 35)) { }
 }

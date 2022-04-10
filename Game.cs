@@ -1,7 +1,7 @@
 ﻿namespace TextyDungeon;
 
-using TextyDungeon.Warriors;
-using TextyDungeon.Enemies;
+using TextyDungeon.Creatures;
+using TextyDungeon.Creatures.Warriors;
 using TextyDungeon.Scenes;
 
 
@@ -85,7 +85,7 @@ internal class Game
   public void PrintArmyList()
   {
     for (int i = 0; i < this.Army.Count; i++) {
-      Console.Write($"{i + 1}. {this.Army[i].Description} (");
+      Console.Write($"{i + 1}. {this.Army[i].Name} (");
       UserInteraction.WriteDungerous($"{this.Army[i].HP} HP");
       Console.Write(") : ");
       if (this.Army[i].IsAlive || this.IsNecromancy) UserInteraction.WriteSuccessLine("Готов к сражению");

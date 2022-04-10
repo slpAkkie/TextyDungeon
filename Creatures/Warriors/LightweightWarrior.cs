@@ -1,4 +1,4 @@
-﻿namespace TextyDungeon.Warriors;
+﻿namespace TextyDungeon.Creatures.Warriors;
 
 
 /// <summary>
@@ -9,5 +9,5 @@ internal class LightweightWarrior : IWarrior
   /// <summary>
   /// Инициализация воина с установленными параметрами
   /// </summary>
-  public LightweightWarrior() : base("Воин в легких доспехах", 0.5) { }
+  public LightweightWarrior() : base("Воин в легких доспехах", "", 1.2) { }
 }
