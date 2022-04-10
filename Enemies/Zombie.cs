@@ -4,7 +4,7 @@
 /// <summary>
 /// Класс противника. Зомби
 /// </summary>
-internal class Zombie : Enemy
+internal class Zombie : IEnemy
 {
   /// <summary>
   /// Инициализация противника

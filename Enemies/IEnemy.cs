@@ -1,7 +1,7 @@
 ﻿namespace TextyDungeon.Enemies;
 
 
-internal abstract class Enemy
+internal abstract class IEnemy
 {
   /// <summary>
   /// Значение минимального урона по умолчанию
@@ -49,13 +49,13 @@ internal abstract class Enemy
   /// <summary>
   /// Инициализация противника со стандартными значениями диапазона урона
   /// </summary>
-  public Enemy(string Name) : this(Name, MIN_DAMAGE, MAX_DAMAGE) { }
+  public IEnemy(string Name) : this(Name, MIN_DAMAGE, MAX_DAMAGE) { }
 
 
   /// <summary>
   /// Инициализация противника с указанием диапазона урона
   /// </summary>
-  public Enemy(string Name, int MinDamage, int MaxDamage)
+  public IEnemy(string Name, int MinDamage, int MaxDamage)
   {
     this.Name = Name;
     this.MinDamage = MinDamage;

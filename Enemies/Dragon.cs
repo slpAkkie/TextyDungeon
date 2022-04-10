@@ -4,7 +4,7 @@
 /// <summary>
 /// Класс противника. Дракон
 /// </summary>
-internal class Dragon : Enemy
+internal class Dragon : IEnemy
 {
   /// <summary>
   /// Инициализация противника

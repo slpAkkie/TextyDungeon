@@ -44,11 +44,6 @@ internal class Game
 
 
   /// <summary>
-  /// Список противников
-  /// </summary>
-  public readonly List<Enemy> Enemies;
-
-  /// <summary>
   /// Список войнов гарнизона
   /// </summary>
   public readonly List<IWarrior> Army;
@@ -77,14 +72,6 @@ internal class Game
       new CommonWarrior(),
       new LightweightWarrior(),
       new HeavyweightWarrior(),
-    };
-
-    // Создание списка противников
-    this.Enemies = new()
-    {
-      new Skeleton(),
-      new Zombie(),
-      new Dragon(),
     };
 
     // Инициализация списка сцен

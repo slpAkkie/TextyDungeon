@@ -4,7 +4,7 @@
 /// <summary>
 /// Класс противника. Скелет
 /// </summary>
-internal class Skeleton : Enemy
+internal class Skeleton : IEnemy
 {
   /// <summary>
   /// Инициализация противника

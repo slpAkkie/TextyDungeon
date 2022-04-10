@@ -39,6 +39,7 @@ internal class TavernScene : IScene
     this.Food = new List<IFood>()
     {
       new Beer(),
+      new Chowder(),
     };
   }
 

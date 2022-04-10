@@ -6,6 +6,8 @@
 /// </summary>
 internal class SceneList
 {
+  private Game GameInstance;
+
   /// <summary>
   /// Список сцен, который может быть выведен пользователю как один из вариантов локаций
   /// </summary>
@@ -44,6 +46,8 @@ internal class SceneList
   /// <param name="GameInstance">Объект игры</param>
   public SceneList(Game GameInstance)
   {
+    this.GameInstance = GameInstance;
+
     // Инициализация сцен
     this.EnumerableScenes = new List<IScene>
     {
