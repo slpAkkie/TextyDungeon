@@ -6,5 +6,5 @@
 /// </summary>
 internal class CommonWarrior : IWarrior
 {
-  public CommonWarrior() : base("Обычный воин", "", 1.0) { }
+  public CommonWarrior() : base("Обычный воин", "", 1.0, 80) { }
 }

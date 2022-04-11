@@ -6,5 +6,5 @@
 /// </summary>
 internal class HeavyweightWarrior : IWarrior
 {
-  public HeavyweightWarrior() : base("Воин в тяжелых доспехах", "", 2.0) { }
+  public HeavyweightWarrior() : base("Воин в тяжелых доспехах", "", 2.0, 180) { }
 }

@@ -12,6 +12,11 @@ internal abstract class IWarrior : ICreature
   private const double DEFAULT_DAMAGE = 25.0;
 
   /// <summary>
+  /// Цена наема воина
+  /// </summary>
+  public int HireCost { get; private set; }
+
+  /// <summary>
   /// Урон воина
   /// </summary>
   public double Damage { get; private set; }
@@ -19,17 +24,18 @@ internal abstract class IWarrior : ICreature
   /// <summary>
   /// Показатель брони воина
   /// </summary>
-  protected double Armor { get; private set; }
+  public double Armor { get; private set; }
 
 
   /// <summary>
   /// Инициализация воина с установленными параметрами
   /// </summary>
-  public IWarrior(string Name, string Description, double Arrmor, double HP = MAX_HP) : base(Name, Description)
+  public IWarrior(string Name, string Description, double Arrmor, int HireCost) : base(Name, Description)
   {
     this.Armor = Arrmor;
-    this.HP = HP;
+    this.HP = MAX_HP;
     this.Description = Description;
+    this.HireCost = HireCost;
 
     this.Damage = DEFAULT_DAMAGE;
   }

@@ -10,16 +10,6 @@ using TextyDungeon.Scenes;
 internal class Game
 {
   /// <summary>
-  /// Закончена ли игра
-  /// </summary>
-  public bool Gameover = false;
-
-  /// <summary>
-  /// Включен ли режим некроманта
-  /// </summary>
-  public bool IsNecromancy = false;
-
-  /// <summary>
   /// Список доступных сцен
   /// </summary>
   public readonly SceneList Scenes;
@@ -42,7 +32,7 @@ internal class Game
   /// <summary>
   /// Список войнов гарнизона
   /// </summary>
-  public readonly Army Army;
+  public readonly WarriorsList Army;
 
   /// <summary>
   /// Генерал гарнизона
@@ -56,7 +46,11 @@ internal class Game
   public Game()
   {
     // Создание первоначального гарнизона
-    this.Army = new(this);
+    this.Army = new(new List<IWarrior>() {
+      new CommonWarrior(),
+      new LightweightWarrior(),
+      new HeavyweightWarrior(),
+    });
 
     // Инициализация списка сцен
     this.Scenes = new(this);
@@ -102,7 +96,6 @@ internal class Game
       this.SelectScene(this.Scenes.Select);
     } else if (UserInput == "Q") {
       this.SelectScene(null);
-      this.Gameover = true;
     } else return false;
 
     return true;

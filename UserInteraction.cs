@@ -35,11 +35,11 @@ internal static class UserInteraction
   {
     Console.Clear();
     if (GameInstance.Army.IsDead)
-      Console.WriteLine(
-         GameInstance.IsNecromancy
-         ? "Вы бросили путь войны, а ваши войны теперь будут вечно ходить по землям королевства в поисках битвы"
-         : "Вы сохранили свою честь и пали в битве вместе со своими войнами"
-       );
+      Console.WriteLine("Не все битвы кончаются победой, но вы сделали все что могли.");
+    else
+      Console.WriteLine("Вы ушли ушли на пенсию и передали свой гарнизон в подчинение новому генералу. Отдахайте");
+
+    NewLine();
     WriteGreenLine("Вы были хорошим предводителем. Ваши подчиненные будут помнить вас вечно");
     Console.ReadLine();
   }

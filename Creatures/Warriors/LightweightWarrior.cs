@@ -6,5 +6,5 @@
 /// </summary>
 internal class LightweightWarrior : IWarrior
 {
-  public LightweightWarrior() : base("Воин в легких доспехах", "", 1.2) { }
+  public LightweightWarrior() : base("Воин в легких доспехах", "", 1.2, 100) { }
 }

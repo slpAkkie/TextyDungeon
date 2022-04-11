@@ -22,7 +22,7 @@ internal class DungeonScene : IScene
   /// <summary>
   /// Условие, при котором сцена продолжает обновляться
   /// </summary>
-  protected override bool ContinueCondition => !this.IsEnemiesDead;
+  protected override bool ContinueCondition => !this.IsEnemiesDead && !this.GameInstance.Army.IsDead;
 
   /// <summary>
   /// Приостановить сцену (Не менять врагов при запуске)

@@ -18,7 +18,7 @@ internal class BattleScene : IScene
   /// <summary>
   /// Условие, при котором сцена продолжает обновляться
   /// </summary>
-  protected override bool ContinueCondition => !this.IsArmyDead() && !this.GameInstance.Gameover && this.Enemy.IsAlive;
+  protected override bool ContinueCondition => !this.IsArmyDead() && this.Enemy.IsAlive;
 
   /// <summary>
   /// Индекс выбранного война в списке
@@ -90,7 +90,7 @@ internal class BattleScene : IScene
       UserInteraction.WriteRedLine($"Нельзя выбрать {this.NumberOfChosenWarrior} война");
     else if (this.IndexOfChosenWarrior >= this.GameInstance.Army.Count)
       UserInteraction.WriteRedLine("Ваша армия не настолько большая. Такого война нет");
-    else if (this.ChosenWarrior.IsDead && !this.GameInstance.IsNecromancy)
+    else if (this.ChosenWarrior.IsDead)
       UserInteraction.WriteRedLine("К сожалению этот воин уже погиб, он не может больше сражаться. Упокой Господь его душу");
     else
       this.Fight();
@@ -115,7 +115,7 @@ internal class BattleScene : IScene
     UserInteraction.NewLine();
     Console.WriteLine("В вашем распоряжении следующие воины:");
 
-    this.GameInstance.Army.Print();
+    this.GameInstance.Army.PrintList();
   }
 
   /// <summary>
@@ -128,7 +128,7 @@ internal class BattleScene : IScene
   /// </summary>
   private void Fight()
   {
-    this.DamageTaken = this.GameInstance.IsNecromancy ? 0 : this.Enemy.Damage;
+    this.DamageTaken = this.Enemy.Damage;
     this.DamageGiven = this.ChosenWarrior.Damage;
     bool WarriorDead = !this.ChosenWarrior.TakeDamage(this.DamageTaken);
     this.Enemy.TakeDamage(this.DamageGiven);
@@ -186,19 +186,11 @@ internal class BattleScene : IScene
   /// <returns>true если армия мертва и продолжение игры не возможно, в противном случае false</returns>
   private bool IsArmyDead()
   {
-    if (!this.GameInstance.Army.IsDead || this.GameInstance.IsNecromancy)
-      return false;
+    if (!this.GameInstance.Army.IsDead) return false;
 
     UserInteraction.WriteRedLine("Ваша армия пала в сражении с врагом");
-    Console.WriteLine("Вы опечалены таким концом");
-    Console.WriteLine("Прибегнуть к Некромантии?");
 
-    if (this.GameInstance.IsNecromancy = UserInteraction.GetYesNo()) {
-      UserInteraction.WriteBlueLine("Вы прибегли к некромантии, ваша душа осквернена, но теперь ваши войны бессмертны");
-      UserInteraction.NewLine();
-    }
-
-    return !this.GameInstance.IsNecromancy;
+    return true;
   }
 
   /// <summary>

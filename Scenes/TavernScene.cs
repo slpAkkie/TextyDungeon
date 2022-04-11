@@ -76,29 +76,26 @@ internal class TavernScene : IScene
   /// Сценарий при выборе воина
   /// </summary>
   /// <param name="UserIntInput">Введенная строка</param>
-  /// <returns>true если сценарий завершился без ошибок, иначе false</returns>
-  private bool ChooseWarrior(int? UserIntInput)
+  private void ChooseWarrior(int? UserIntInput)
   {
     int WarriorIndex = (int)UserIntInput - 1;
     if (!this.GameInstance.IsWarrior(WarriorIndex)) {
       Console.Clear();
-      UserInteraction.NewLine();
       UserInteraction.WriteErrorTop("У вас нет такого война, взгляните заново");
-      return false;
+      return;
     }
     IWarrior ChosenWarrior = this.GameInstance.Army[WarriorIndex];
 
     if (ChosenWarrior.IsDead) {
       Console.Clear();
-      UserInteraction.NewLine();
       UserInteraction.WriteErrorTop("Этот воин уже мертв. никакая выпивка и еда ему не поможет");
-      return false;
+      return;
     } else if (ChosenWarrior.HP == 100) {
       Console.Clear();
       Console.WriteLine("Этому воину не надо восстанавливать здоровье.");
       UserInteraction.NewLine();
       UserInteraction.WriteBlueLine($"Вы уверены, что хотите потратить \"{this.Food[(int)this.ChosenFoodIndex].Name}\" на этого воина?");
-      if (!UserInteraction.GetYesNo()) return false;
+      if (!UserInteraction.GetYesNo()) return;
     }
 
     this.GameInstance.ArmyLeader.ChangeCoins(-this.Food[(int)this.ChosenFoodIndex].Cost);
@@ -108,20 +105,19 @@ internal class TavernScene : IScene
     UserInteraction.WriteBlueLine($"Здоровья выбранного война увеличено на {this.Food[(int)this.ChosenFoodIndex].HillAmount}");
     this.ChosenFoodIndex = null;
 
-    return true;
+    return;
   }
 
   /// <summary>
   /// Сценарий при выборе еды
   /// </summary>
   /// <param name="UserIntInput">Введенная строка</param>
-  /// <returns>true если сценарий завершился без ошибок, иначе false</returns>
-  public bool ChooseFood(int? UserIntInput)
+  public void ChooseFood(int? UserIntInput)
   {
     if (UserIntInput < 1 || UserIntInput > this.Food.Count) {
       Console.Clear();
       UserInteraction.WriteErrorTop("У нас нет такого товара, пожалуйста выберите другой");
-      return false;
+      return;
     }
 
     --UserIntInput;
@@ -129,12 +125,12 @@ internal class TavernScene : IScene
     if (this.Food[(int)UserIntInput].Cost > this.GameInstance.ArmyLeader.Coins) {
       Console.Clear();
       UserInteraction.WriteErrorTop("У вас не хватает монет на этот товар. Пожалуйста, выберите другой");
-      return false;
+      return;
     }
 
     this.ChosenFoodIndex = UserIntInput;
 
-    return true;
+    return;
   }
 
   /// <summary>
@@ -147,7 +143,7 @@ internal class TavernScene : IScene
       this.Food[(int)this.ChosenFoodIndex].Print();
       UserInteraction.NewLine();
       Console.WriteLine("Теперь выберите какому войну отдать этот товар");
-      this.GameInstance.Army.Print();
+      this.GameInstance.Army.PrintList();
     } else {
       Console.WriteLine("Добро пожаловать в таверну");
       Console.WriteLine("Здесь вы можете восстановить здоровье своих воинов");
