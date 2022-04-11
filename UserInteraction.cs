@@ -34,7 +34,7 @@ internal static class UserInteraction
   public static void EndGameMessage(Game GameInstance)
   {
     Console.Clear();
-    if (GameInstance.IsArmyDead)
+    if (GameInstance.Army.IsDead)
       Console.WriteLine(
          GameInstance.IsNecromancy
          ? "Вы бросили путь войны, а ваши войны теперь будут вечно ходить по землям королевства в поисках битвы"

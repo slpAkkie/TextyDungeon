@@ -42,17 +42,7 @@ internal class Game
   /// <summary>
   /// Список войнов гарнизона
   /// </summary>
-  public readonly List<IWarrior> Army;
-
-  /// <summary>
-  /// Количество мертвых войнов в гарнизоне
-  /// </summary>
-  public int QuantityOfDeadWarriors = 0;
-
-  /// <summary>
-  /// Пала ли вся армия
-  /// </summary>
-  public bool IsArmyDead { get => this.QuantityOfDeadWarriors == this.Army.Count; }
+  public readonly Army Army;
 
   /// <summary>
   /// Генерал гарнизона
@@ -66,33 +56,13 @@ internal class Game
   public Game()
   {
     // Создание первоначального гарнизона
-    this.Army = new()
-    {
-      new CommonWarrior(),
-      new LightweightWarrior(),
-      new HeavyweightWarrior(),
-    };
+    this.Army = new(this);
 
     // Инициализация списка сцен
     this.Scenes = new(this);
 
     // Запуск стартовой сцены
     this.CurrentScene = this.Scenes.Start;
-  }
-
-
-  /// <summary>
-  /// Вывести гарнизон
-  /// </summary>
-  public void PrintArmyList()
-  {
-    for (int i = 0; i < this.Army.Count; i++) {
-      Console.Write($"{i + 1}. {this.Army[i].Name} (");
-      UserInteraction.WriteRed($"{this.Army[i].HP} HP");
-      Console.Write(") : ");
-      if (this.Army[i].IsAlive || this.IsNecromancy) UserInteraction.WriteGreenLine("Готов к сражению");
-      else UserInteraction.WriteRedLine("Умер");
-    }
   }
 
   /// <summary>

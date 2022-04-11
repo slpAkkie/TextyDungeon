@@ -147,7 +147,7 @@ internal class TavernScene : IScene
       this.Food[(int)this.ChosenFoodIndex].Print();
       UserInteraction.NewLine();
       Console.WriteLine("Теперь выберите какому войну отдать этот товар");
-      this.GameInstance.PrintArmyList();
+      this.GameInstance.Army.Print();
     } else {
       Console.WriteLine("Добро пожаловать в таверну");
       Console.WriteLine("Здесь вы можете восстановить здоровье своих воинов");

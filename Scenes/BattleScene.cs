@@ -115,7 +115,7 @@ internal class BattleScene : IScene
     UserInteraction.NewLine();
     Console.WriteLine("В вашем распоряжении следующие воины:");
 
-    this.GameInstance.PrintArmyList();
+    this.GameInstance.Army.Print();
   }
 
   /// <summary>
@@ -134,7 +134,7 @@ internal class BattleScene : IScene
     this.Enemy.TakeDamage(this.DamageGiven);
 
     if (WarriorDead)
-      this.GameInstance.QuantityOfDeadWarriors++;
+      this.GameInstance.Army.QuantityOfDead++;
 
     if (this.IsWon) {
       int WinCost = this.Enemy.WinCost;
@@ -186,7 +186,7 @@ internal class BattleScene : IScene
   /// <returns>true если армия мертва и продолжение игры не возможно, в противном случае false</returns>
   private bool IsArmyDead()
   {
-    if (!this.GameInstance.IsArmyDead || this.GameInstance.IsNecromancy)
+    if (!this.GameInstance.Army.IsDead || this.GameInstance.IsNecromancy)
       return false;
 
     UserInteraction.WriteRedLine("Ваша армия пала в сражении с врагом");
