@@ -2,19 +2,14 @@
 
 
 /// <summary>
-/// Базовый класс для игровых объектов
+/// Игровые объекты, которые можно купить
 /// </summary>
-internal abstract class IGameObject
+internal class IBuyableGameObject : IGameObject
 {
   /// <summary>
-  /// Название объекта
+  /// Стоимость объекта
   /// </summary>
-  public string Name;
-
-  /// <summary>
-  /// Описание объекта
-  /// </summary>
-  public string Description;
+  public readonly int Cost;
 
 
   /// <summary>
@@ -23,9 +18,5 @@ internal abstract class IGameObject
   /// <param name="Name">Название объекта</param>
   /// <param name="Description">Описание объекта</param>
   /// <param name="Cost">Стоимость объекта</param>
-  public IGameObject(string Name, string Description)
-  {
-    this.Name = Name;
-    this.Description = Description;
-  }
+  public IBuyableGameObject(string Name, string Description, int Cost) : base(Name, Description) => this.Cost = Cost;
 }

@@ -1,5 +1,8 @@
 ﻿namespace TextyDungeon.Creatures.Warriors;
 
+using TextyDungeon.Objects.Equipment.Armor;
+using TextyDungeon.Objects.Equipment.Weapon;
+
 
 /// <summary>
 /// Базовый класс воинов
@@ -19,25 +22,35 @@ internal abstract class IWarrior : ICreature
   /// <summary>
   /// Урон воина
   /// </summary>
-  public double Damage { get; private set; }
+  public double Damage { get => this.Weapon.DamageRange.Random; }
 
   /// <summary>
   /// Показатель брони воина
   /// </summary>
-  public double Armor { get; private set; }
+  public double Armor { get => this.BodyArmor.ProtectionRate; }
+
+  /// <summary>
+  /// Броня на тело
+  /// </summary>
+  public IArmor BodyArmor { get; protected set; }
+
+  /// <summary>
+  /// Оружие
+  /// </summary>
+  public IWeapon Weapon { get; protected set; }
 
 
   /// <summary>
   /// Инициализация воина с установленными параметрами
   /// </summary>
-  public IWarrior(string Name, string Description, double Arrmor, int HireCost) : base(Name, Description)
+  public IWarrior(string Name, string Description, IWeapon Weapon, int HireCost) : base(Name, Description)
   {
-    this.Armor = Arrmor;
+    this.BodyArmor = new CommonBreastplate();
     this.HP = MAX_HP;
     this.Description = Description;
     this.HireCost = HireCost;
 
-    this.Damage = DEFAULT_DAMAGE;
+    this.Weapon = Weapon;
   }
 
 

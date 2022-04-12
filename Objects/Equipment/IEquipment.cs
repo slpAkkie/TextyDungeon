@@ -4,12 +4,13 @@
 /// <summary>
 /// Базовый класс для снаряжения
 /// </summary>
-internal abstract class IEquipment : IGameObject
+internal abstract class IEquipment : IBuyableGameObject
 {
   /// <summary>
   /// Инициализация объекта снаряжения
   /// </summary>
   /// <param name="Name">Название снаряжения</param>
   /// <param name="Description">Описание снаряжения</param>
-  public IEquipment(string Name, string Description) : base(Name, Description) { }
+  /// <param name="Cost">Цена снаряжения</param>
+  public IEquipment(string Name, string Description, int Cost) : base(Name, Description, Cost) { }
 }
