@@ -40,6 +40,9 @@ internal class BattleScene : IScene
   /// </summary>
   private IEnemy Enemy;
 
+  /// <summary>
+  /// Побежден ли враг
+  /// </summary>
   private bool IsWon { get => this.Enemy.IsDead; }
 
   /// <summary>
@@ -198,6 +201,11 @@ internal class BattleScene : IScene
   /// </summary>
   public override void Closing()
   {
+    if (this.GameInstance.Army.IsDead) {
+      this.GameInstance.SelectScene(null);
+      return;
+    }
+
     if (!this.IsWon || this.IsWon && this.Dungeon.IsEnemiesDead) this.Dungeon.PreserveEnemyRefill = false;
     else this.Dungeon.PreserveEnemyRefill = true;
   }

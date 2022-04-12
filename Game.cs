@@ -139,10 +139,10 @@ internal class Game
         this.CurrentScene.Update(UserInput);
       } while (this.CurrentScene.IsContinue);
 
-      if (this.NextScene == null) break;
-
       // Хук до закрытия текущей сцены
       this.CurrentScene.Closing();
+
+      if (this.NextScene == null) break;
       this.CurrentScene = this.NextScene;
       this.NextScene = null;
     }

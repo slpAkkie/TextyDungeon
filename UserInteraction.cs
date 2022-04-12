@@ -35,7 +35,7 @@ internal static class UserInteraction
   {
     Console.Clear();
     if (GameInstance.Army.IsDead)
-      Console.WriteLine("Не все битвы кончаются победой, но вы сделали все что могли.");
+      Console.WriteLine("Не всегда случается вернуться домой после битвы, но вы сделали все что могли.");
     else
       Console.WriteLine("Вы ушли ушли на пенсию и передали свой гарнизон в подчинение новому генералу. Отдахайте");
 

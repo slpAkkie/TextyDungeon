@@ -1,5 +1,6 @@
 ﻿namespace TextyDungeon.Scenes;
 
+using TextyDungeon.Extensions;
 using TextyDungeon.Creatures.Enemies;
 using TextyDungeon.Utils;
 
@@ -108,7 +109,7 @@ internal class DungeonScene : IScene
   {
     this.AvailableEnemies.Remove(Enemy);
 
-    if (this.AvailableEnemies.Count == 0) {
+    if (this.AvailableEnemies.Empty()) {
       this.GameInstance.ArmyLeader.ChangeCoins((int)this.WinCost);
 
       this.GameInstance.SelectScene(this, delegate () {

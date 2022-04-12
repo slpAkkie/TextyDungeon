@@ -84,8 +84,9 @@ internal class BarracksScene : IScene
       return;
     }
 
-    this.GameInstance.Army.Add(this.AvailableWarriors[(int)UserIntInput]);
-    this.AvailableWarriors.Remove(this.AvailableWarriors[(int)UserIntInput]);
+    this.GameInstance.ArmyLeader.ChangeCoins(-WarriorToBuy.HireCost);
+    this.GameInstance.Army.Add(WarriorToBuy);
+    this.AvailableWarriors.Remove(WarriorToBuy);
   }
 
   /// <summary>
