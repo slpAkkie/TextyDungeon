@@ -6,5 +6,5 @@
 /// </summary>
 internal class LightweightBreastplate : IArmor
 {
-  public LightweightBreastplate() : base("Легкий нагрудник", "как и обычный нагрудник, только чуть легче", 1, 25) { }
+  public LightweightBreastplate() : base("Легкий нагрудник", "Как и обычный нагрудник, только чуть легче", 1, 25) { }
 }

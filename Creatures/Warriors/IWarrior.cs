@@ -1,5 +1,6 @@
 ﻿namespace TextyDungeon.Creatures.Warriors;
 
+using TextyDungeon.Objects.Equipment;
 using TextyDungeon.Objects.Equipment.Armor;
 using TextyDungeon.Objects.Equipment.Weapon;
 
@@ -71,4 +72,13 @@ internal abstract class IWarrior : ICreature
   /// </summary>
   /// <param name="HillAmount">Количество HP для восстановления</param>
   public void Hill(int HillAmount) => this.HP += HillAmount;
+
+  /// <summary>
+  /// Экипировать снаряжение
+  /// </summary>
+  /// <param name="Equipment"></param>
+  public void Equip(IEquipment Equipment) {
+    if (Equipment is IArmor) this.BodyArmor = (IArmor)Equipment;
+    else if (Equipment is IWeapon) this.Weapon = (IWeapon)Equipment;
+  }
 }

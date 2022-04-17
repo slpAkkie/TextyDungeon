@@ -22,4 +22,18 @@ internal abstract class IWeapon : IEquipment
   /// <param name="DamageRange">Диапазон возможного урона</param>
   /// <param name="Cost">Цена оружия</param>
   public IWeapon(string Name, string Description, SRange DamageRange, int Cost) : base(Name, Description, Cost) => this.DamageRange = DamageRange;
+
+
+  /// <summary>
+  /// Напечатать информацию о броне
+  /// </summary>
+  public override void Print()
+  {
+    UserInteraction.WriteBlue(this.Name);
+    Console.Write(" / Урон ");
+    UserInteraction.WriteRed($"{this.DamageRange.MinValue}-{this.DamageRange.MaxValue} HP");
+    Console.Write(", стоимость ");
+    UserInteraction.WriteGreen($"{this.Cost} золотых монет");
+    Console.WriteLine($". ({this.Description})");
+  }
 }

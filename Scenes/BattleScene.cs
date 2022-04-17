@@ -143,8 +143,8 @@ internal class BattleScene : IScene
       int WinCost = this.Enemy.WinCost;
       this.GameInstance.ArmyLeader.ChangeCoins(WinCost);
       this.GameInstance.SelectScene(this.GameInstance.Scenes.Dungeon, delegate() {
-        UserInteraction.WriteGreen("Враг побежден.");
-        Console.Write(" Вы получили ");
+        this.PrintFightResult();
+        Console.Write("Вы получили ");
         UserInteraction.WriteGreen($"{WinCost} монет");
         Console.Write(".");
         this.GameInstance.ArmyLeader.PrintCoins();
@@ -154,7 +154,7 @@ internal class BattleScene : IScene
       this.Dungeon.RemoveEnemy(this.Enemy);
     }
 
-    PrintFightResult(this.Enemy);
+    PrintFightResult();
     if ((this.GameInstance.Scenes.Dungeon as DungeonScene).IsEnemiesDead) {
       UserInteraction.NewLine();    
       Console.WriteLine("Все враги в подземелье повержены");
@@ -167,10 +167,10 @@ internal class BattleScene : IScene
   /// Выводит информацию о последней битве
   /// </summary>
   /// <param name="TheEnemy">Объект противника</param>
-  private void PrintFightResult(IEnemy TheEnemy)
+  private void PrintFightResult()
   {
     Console.Write($"Воин номер {this.IndexOfChosenWarrior + 1} сразился с ");
-    UserInteraction.WriteRed($"\"{TheEnemy.Name}\"");
+    UserInteraction.WriteRed($"\"{this.Enemy.Name}\"");
     Console.Write(". Нанесено ");
     UserInteraction.WriteRed($"{this.DamageGiven}");
     Console.Write(" урона, получено ");

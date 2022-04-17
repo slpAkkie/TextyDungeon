@@ -67,16 +67,16 @@ internal class TavernScene : IScene
       return;
 
     if (this.WaitWarriorChoose)
-      this.ChooseWarrior(UserIntInput);
+      this.ChooseWarrior((int)UserIntInput);
     else
-      this.ChooseFood(UserIntInput);
+      this.ChooseFood((int)UserIntInput);
   }
 
   /// <summary>
   /// Сценарий при выборе воина
   /// </summary>
-  /// <param name="UserIntInput">Введенная строка</param>
-  private void ChooseWarrior(int? UserIntInput)
+  /// <param name="UserIntInput">Введенное число</param>
+  private void ChooseWarrior(int UserIntInput)
   {
     int WarriorIndex = (int)UserIntInput - 1;
     if (!this.GameInstance.IsWarrior(WarriorIndex)) {
@@ -88,7 +88,7 @@ internal class TavernScene : IScene
 
     if (ChosenWarrior.IsDead) {
       Console.Clear();
-      UserInteraction.WriteErrorTop("Этот воин уже мертв. никакая выпивка и еда ему не поможет");
+      UserInteraction.WriteErrorTop("Этот воин уже мертв. Никакая выпивка и еда ему не поможет");
       return;
     } else if (ChosenWarrior.HP == 100) {
       Console.Clear();
@@ -103,16 +103,15 @@ internal class TavernScene : IScene
 
     Console.Clear();
     UserInteraction.WriteBlueLine($"Здоровья выбранного война увеличено на {this.Food[(int)this.ChosenFoodIndex].HillAmount}");
+    UserInteraction.NewLine();
     this.ChosenFoodIndex = null;
-
-    return;
   }
 
   /// <summary>
   /// Сценарий при выборе еды
   /// </summary>
-  /// <param name="UserIntInput">Введенная строка</param>
-  public void ChooseFood(int? UserIntInput)
+  /// <param name="UserIntInput">Введенное число</param>
+  public void ChooseFood(int UserIntInput)
   {
     if (UserIntInput < 1 || UserIntInput > this.Food.Count) {
       Console.Clear();
@@ -129,8 +128,6 @@ internal class TavernScene : IScene
     }
 
     this.ChosenFoodIndex = UserIntInput;
-
-    return;
   }
 
   /// <summary>
