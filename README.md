@@ -1,11 +1,11 @@
 # TextyDungeon
 
-Небольшая консольная rpg-игра
+Simple console rpg-game
 
-## Автор
+## Author
 
 Alexandr Shamanin (slpAkkie)
 
-## Версия
+## Version
 
 1.1.3.0
