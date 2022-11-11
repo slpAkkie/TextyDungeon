@@ -1,6 +1,6 @@
-# TextyDungeon
+## TextyDungeon
 
-Simple console rpg-game
+Text console rpg-game made in C# .NET 6.0
 
 ## Author
 
