@@ -1,11 +1,11 @@
-## TextyDungeon
+# TextyDungeon
 
-Text console rpg-game made in C# .NET 6.0
+Консольная, текстовая игра на C# .NET 6.0
 
-## Author
+## Автор
 
 Alexandr Shamanin (slpAkkie)
 
-## Version
+## Версия
 
-1.1.3.0
+1.0.3
