@@ -32,7 +32,7 @@ internal abstract class IScene
   public bool IsMenuDisabled = false;
 
   /// <summary>
-  /// Блокировка вывода игрового меню (Не меню сцены)
+  /// Блокировка ввода на следующем обновлении
   /// </summary>
   public bool IsPromptDisabled = false;
 

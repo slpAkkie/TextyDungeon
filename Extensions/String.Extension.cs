@@ -14,7 +14,8 @@ internal static class StringExtension
   /// <returns>Измененная строка</returns>
   public static string Repeat(this string Str, int amount)
   {
-    for (int i = 1; i < amount; i++) Str += Str;
+    for (int i = 1; i < amount; i++)
+      Str += Str;
 
     return Str;
   }

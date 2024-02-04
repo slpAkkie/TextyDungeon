@@ -8,5 +8,5 @@ using TextyDungeon.Utils;
 /// </summary>
 internal class Skeleton : IEnemy
 {
-  public Skeleton() : base("Скелет", "", new SRange(10, 25)) { }
+  public Skeleton() : base("Скелет", "", new SRange(10, 25), 75) { }
 }

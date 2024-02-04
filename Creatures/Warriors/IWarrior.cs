@@ -44,14 +44,12 @@ internal abstract class IWarrior : ICreature
   /// <summary>
   /// Инициализация воина с установленными параметрами
   /// </summary>
-  public IWarrior(string Name, string Description, IWeapon Weapon, int HireCost) : base(Name, Description)
+  public IWarrior(string Name, IWeapon Weapon, IArmor BodyArmor, int HireCost) : base(Name, "")
   {
-    this.BodyArmor = new CommonBreastplate();
-    this.HP = MAX_HP;
-    this.Description = Description;
-    this.HireCost = HireCost;
-
     this.Weapon = Weapon;
+    this.BodyArmor = BodyArmor;
+
+    this.HireCost = HireCost;
   }
 
 
@@ -78,7 +76,7 @@ internal abstract class IWarrior : ICreature
   /// </summary>
   /// <param name="Equipment"></param>
   public void Equip(IEquipment Equipment) {
-    if (Equipment is IArmor) this.BodyArmor = (IArmor)Equipment;
+    if (Equipment is IArmor)this.BodyArmor = (IArmor)Equipment;
     else if (Equipment is IWeapon) this.Weapon = (IWeapon)Equipment;
   }
 }

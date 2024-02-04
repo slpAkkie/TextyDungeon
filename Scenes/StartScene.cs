@@ -43,15 +43,14 @@ internal class StartScene : IScene
   public override void Update(string UserInput)
   {
     if (UserInput == "") {
-      Console.Clear();
-      UserInteraction.WriteErrorTop("Имя Генерала не может быть пустым");
-      return;
+      UserInput = this.GameInstance.ArmyLeader.Name;
     }
 
     Console.Clear();
-    Console.WriteLine(String.Format("Имя Генерала будет установлена как: {0}", UserInput));
+    Console.Write("Имя Генерала будет установлена как: ");
+    UserInteraction.WriteBlueLine(UserInput);
     UserInteraction.NewLine();
-    UserInteraction.WriteBlueLine("Согласны? (Да | Нет)");
+    UserInteraction.WriteBlueLine("Продолжить? (Да | Нет)");
     if (!(this.Confirmation = UserInteraction.GetYesNo())) return;
 
 
@@ -62,10 +61,14 @@ internal class StartScene : IScene
   /// <summary>
   /// Вывод информации по сцене и возможных действий
   /// </summary>
-  public override void PrintAcions() => Console.WriteLine("Добро пожаловать. У каждого великого воина должно быть запоминающееся имя");
+  public override void PrintAcions()
+  {
+    Console.WriteLine("Добро пожаловать!");
+    Console.WriteLine("Ваша армия уже стоит перед вами и хочет узнать, как к вам обращаться.");
+  }
 
   /// <summary>
   /// Вывод сообщения (Приглашения пользователя к вводу)
   /// </summary>
-  public override void Prompt() => UserInteraction.WriteBlueLine("Введите имя своего генерала");
+  public override void Prompt() => UserInteraction.WriteBlueLine("Введите имя генерала:");
 }

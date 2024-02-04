@@ -1,7 +1,10 @@
 ﻿namespace TextyDungeon;
 
 using TextyDungeon.Creatures.Warriors;
+using TextyDungeon.Objects.Equipment.Armor;
+using TextyDungeon.Objects.Equipment.Weapon;
 using TextyDungeon.Scenes;
+using TextyDungeon.Utils;
 
 
 /// <summary>
@@ -47,9 +50,9 @@ internal class Game
   {
     // Создание первоначального гарнизона
     this.Army = new(new List<IWarrior>() {
-      new CommonWarrior(),
-      new LightweightWarrior(),
-      new HeavyweightWarrior(),
+      new CommonWarrior(StringGenerator.GetRandomHumanName(), new CommonSword(), new LightweightBreastplate(), 80),
+      new CommonWarrior(StringGenerator.GetRandomHumanName(), new CommonSword(), new CommonBreastplate(), 100),
+      new CommonWarrior(StringGenerator.GetRandomHumanName(), new CommonSword(), new HeavyweightBreastplate(), 125),
     });
 
     // Инициализация списка сцен
@@ -57,6 +60,9 @@ internal class Game
 
     // Запуск стартовой сцены
     this.CurrentScene = this.Scenes.Start;
+
+    // Установим начальное количество монет
+    this.ArmyLeader.ChangeCoins(15);
   }
 
   /// <summary>
@@ -67,7 +73,7 @@ internal class Game
     this.NextScene = NextScene;
     this.BeforeNextScene = BeforeNextScene;
   }
-  
+
   /// <summary>
   /// Установить имя Генерала
   /// </summary>
@@ -75,7 +81,8 @@ internal class Game
   public void SetArmyLeaderName(string? Name)
   {
     // Если было передано имя, установить его
-    if (Name != null) this.ArmyLeader.Name = Name;
+    if (Name != null)
+      this.ArmyLeader.Name = Name;
   }
 
   /// <summary>
@@ -92,11 +99,16 @@ internal class Game
   /// <returns></returns>
   public bool CheckUserInput(string UserInput)
   {
-    if (UserInput == "") {
+    if (UserInput.Trim() == "")
+    {
       this.SelectScene(this.Scenes.Select);
-    } else if (UserInput == "Q") {
+    }
+    else if (UserInput.ToUpper() == "Q")
+    {
       this.SelectScene(null);
-    } else return false;
+    }
+    else
+      return false;
 
     return true;
   }
@@ -107,25 +119,33 @@ internal class Game
   public void StartGame()
   {
     // Запуск текущей сцены
-    while (true) {
+    while (true)
+    {
       Console.Clear();
+
       // Хук до запуска следующей сцены
-      if (this.BeforeNextScene != null) this.BeforeNextScene();
+      if (this.BeforeNextScene != null)
+        this.BeforeNextScene();
+
       this.CurrentScene.Start();
 
       // Жизненный цикл сцены
-      do {
+      do
+      {
         this.CurrentScene.PrintAcions();
 
-        if (!this.CurrentScene.IsMenuDisabled) {
+        if (!this.CurrentScene.IsMenuDisabled)
+        {
+          UserInteraction.NewLine();
           UserInteraction.NewLine();
           Console.WriteLine(">>> Нажмите Enter, чтобы выбрать локацию");
-          Console.WriteLine(">>> Введите Q, чтобы закрыть приложение");
+          Console.WriteLine(">>> Введите Q, чтобы выйти из игры");
         }
 
         string UserInput = "";
 
-        if (!this.CurrentScene.IsPromptDisabled) {
+        if (!this.CurrentScene.IsPromptDisabled)
+        {
           UserInteraction.NewLine(2);
           this.CurrentScene.Prompt();
 
@@ -142,7 +162,9 @@ internal class Game
       // Хук до закрытия текущей сцены
       this.CurrentScene.Closing();
 
-      if (this.NextScene == null) break;
+      if (this.NextScene == null)
+        break;
+
       this.CurrentScene = this.NextScene;
       this.NextScene = null;
     }

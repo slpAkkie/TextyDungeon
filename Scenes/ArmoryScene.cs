@@ -5,6 +5,7 @@ using TextyDungeon.Creatures.Warriors;
 using TextyDungeon.Objects.Equipment;
 using TextyDungeon.Objects.Equipment.Armor;
 using TextyDungeon.Objects.Equipment.Weapon;
+using TextyDungeon.Extensions;
 
 
 /// <summary>
@@ -12,6 +13,11 @@ using TextyDungeon.Objects.Equipment.Weapon;
 /// </summary>
 internal class ArmoryScene : IScene
 {
+  /// <summary>
+  /// Цена смены ассортимента
+  /// </summary>
+  private const int UPDATE_SHOP_COST = 15;
+
   /// <summary>
   /// Название сцены
   /// </summary>
@@ -28,8 +34,11 @@ internal class ArmoryScene : IScene
   private List<Func<IEquipment>> EquipmentCreator = new() {
     () => new CommonSword(),
     () => new BarbarianSword(),
+    () => new Axe(),
+    () => new MagicStick(),
 
     () => new CommonBreastplate(),
+    () => new Hat(),
     () => new LightweightBreastplate(),
     () => new HeavyweightBreastplate(),
   };
@@ -58,6 +67,17 @@ internal class ArmoryScene : IScene
 
 
   /// <summary>
+  /// Заполнить список снаряжения, доступного для покупки
+  /// </summary>
+  private void RefillArmory()
+  {
+    this.AvailableEquipment.Clear();
+
+    for (int _ = 0; _ < 5; _++)
+      this.AvailableEquipment.Add(this.EquipmentCreator[new Random().Next(0, this.EquipmentCreator.Count)]());
+  }
+
+  /// <summary>
   /// Запуск сцены
   /// </summary>
   public override void Start()
@@ -66,10 +86,8 @@ internal class ArmoryScene : IScene
     UserInteraction.WriteBlueLine(this.GameInstance.ArmyLeader.Name);
     UserInteraction.NewLine();
 
-    this.AvailableEquipment.Clear();
-
-    for (int _ = 0; _ < 5; _++)
-      this.AvailableEquipment.Add(this.EquipmentCreator[new Random().Next(0, this.EquipmentCreator.Count)]());
+    if (this.AvailableEquipment.Empty())
+      this.RefillArmory();
   }
 
   /// <summary>
@@ -78,6 +96,29 @@ internal class ArmoryScene : IScene
   public override void Update(string UserInput)
   {
     Console.Clear();
+
+    if (UserInput.Trim().ToUpper() == "C")
+    {
+      if (this.WaitWarriorChoose)
+      {
+        this.ChosenEquipmentIndex = null;
+      }
+      else
+      {
+        if (UPDATE_SHOP_COST > this.GameInstance.ArmyLeader.Coins)
+        {
+          Console.Clear();
+          UserInteraction.WriteErrorTop("У вас не хватает монет, чтобы обновить ассортимент");
+        }
+        else
+        {
+          this.GameInstance.ArmyLeader.ChangeCoins(-UPDATE_SHOP_COST);
+          this.RefillArmory();
+        } 
+      }
+
+      return;
+    }
 
     int? UserIntInput = Utils.ConvertToInt(UserInput, $"Номер {(this.WaitWarriorChoose ? "воина" : "товара")} должен быть числом");
     if (UserIntInput == null)
@@ -100,6 +141,7 @@ internal class ArmoryScene : IScene
     {
       Console.Clear();
       UserInteraction.WriteErrorTop("У вас нет такого война, взгляните заново");
+
       return;
     }
     IWarrior ChosenWarrior = this.GameInstance.Army[WarriorIndex];
@@ -108,6 +150,7 @@ internal class ArmoryScene : IScene
     {
       Console.Clear();
       UserInteraction.WriteErrorTop("Этот воин уже мертв. Снаряжение ему больше ни к чему");
+
       return;
     }
 
@@ -133,6 +176,7 @@ internal class ArmoryScene : IScene
     {
       Console.Clear();
       UserInteraction.WriteErrorTop("У нас нет такого товара, пожалуйста выберите другой");
+
       return;
     }
 
@@ -142,6 +186,7 @@ internal class ArmoryScene : IScene
     {
       Console.Clear();
       UserInteraction.WriteErrorTop("У вас не хватает монет на этот товар. Пожалуйста, выберите другой");
+
       return;
     }
 
@@ -155,22 +200,36 @@ internal class ArmoryScene : IScene
   {
     if (this.WaitWarriorChoose)
     {
-      Console.Write("Вы выбрали ");
+      Console.WriteLine("Вы выбрали:");
+      UserInteraction.WriteBlue(">".PadRight(5));
       this.AvailableEquipment[(int)this.ChosenEquipmentIndex].Print();
       UserInteraction.NewLine();
-      Console.WriteLine("Теперь выберите какому войну отдать этот товар");
+
+      Console.WriteLine("Теперь выберите какому войну отдать этот товар:");
       this.GameInstance.Army.PrintList();
+      UserInteraction.NewLine();
+
+      Console.Write($">>> Введите C, чтобы вернуться назад");
     }
-    else {
+    else
+    {
+      this.GameInstance.ArmyLeader.PrintCoins();
+      UserInteraction.NewLine();
+
       Console.WriteLine("В моем распоряжении следующее снаряжение:");
       for (int i = 0; i < this.AvailableEquipment.Count; i++)
       {
-        Console.Write($"{i + 1}. ");
+        Console.Write($"{i + 1,-5}");
         this.AvailableEquipment[i].Print();
       }
-
       UserInteraction.NewLine();
-      Console.WriteLine($"У вас в распоряжении {this.GameInstance.ArmyLeader.Coins} золотых монет");
+
+      this.GameInstance.Army.PrintList(WithNumber: false);
+      UserInteraction.NewLine();
+
+      Console.Write($">>> Введите C, чтобы сменить ассортимент (стоимость ");
+      UserInteraction.WriteYellow($"{UPDATE_SHOP_COST}G");
+      Console.WriteLine(")");
     }
   }
 

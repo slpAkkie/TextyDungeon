@@ -46,6 +46,8 @@ internal class TavernScene : IScene
     {
       new Beer(),
       new Chowder(),
+      new Moonshine(),
+      new Borsch(),
     };
   }
 
@@ -79,23 +81,28 @@ internal class TavernScene : IScene
   private void ChooseWarrior(int UserIntInput)
   {
     int WarriorIndex = (int)UserIntInput - 1;
-    if (!this.GameInstance.IsWarrior(WarriorIndex)) {
+    if (!this.GameInstance.IsWarrior(WarriorIndex))
+    {
       Console.Clear();
       UserInteraction.WriteErrorTop("У вас нет такого война, взгляните заново");
       return;
     }
     IWarrior ChosenWarrior = this.GameInstance.Army[WarriorIndex];
 
-    if (ChosenWarrior.IsDead) {
+    if (ChosenWarrior.IsDead)
+    {
       Console.Clear();
       UserInteraction.WriteErrorTop("Этот воин уже мертв. Никакая выпивка и еда ему не поможет");
       return;
-    } else if (ChosenWarrior.HP == 100) {
+    }
+    else if (ChosenWarrior.HP == 100)
+    {
       Console.Clear();
       Console.WriteLine("Этому воину не надо восстанавливать здоровье.");
       UserInteraction.NewLine();
       UserInteraction.WriteBlueLine($"Вы уверены, что хотите потратить \"{this.Food[(int)this.ChosenFoodIndex].Name}\" на этого воина?");
-      if (!UserInteraction.GetYesNo()) return;
+      if (!UserInteraction.GetYesNo())
+        return;
     }
 
     this.GameInstance.ArmyLeader.ChangeCoins(-this.Food[(int)this.ChosenFoodIndex].Cost);
@@ -113,7 +120,8 @@ internal class TavernScene : IScene
   /// <param name="UserIntInput">Введенное число</param>
   public void ChooseFood(int UserIntInput)
   {
-    if (UserIntInput < 1 || UserIntInput > this.Food.Count) {
+    if (UserIntInput < 1 || UserIntInput > this.Food.Count)
+    {
       Console.Clear();
       UserInteraction.WriteErrorTop("У нас нет такого товара, пожалуйста выберите другой");
       return;
@@ -121,7 +129,8 @@ internal class TavernScene : IScene
 
     --UserIntInput;
 
-    if (this.Food[(int)UserIntInput].Cost > this.GameInstance.ArmyLeader.Coins) {
+    if (this.Food[(int)UserIntInput].Cost > this.GameInstance.ArmyLeader.Coins)
+    {
       Console.Clear();
       UserInteraction.WriteErrorTop("У вас не хватает монет на этот товар. Пожалуйста, выберите другой");
       return;
@@ -135,24 +144,31 @@ internal class TavernScene : IScene
   /// </summary>
   public override void PrintAcions()
   {
-    if (this.WaitWarriorChoose) {
+    if (this.WaitWarriorChoose)
+    {
       Console.Write("Вы выбрали ");
       this.Food[(int)this.ChosenFoodIndex].Print();
       UserInteraction.NewLine();
       Console.WriteLine("Теперь выберите какому войну отдать этот товар");
       this.GameInstance.Army.PrintList();
-    } else {
+    }
+    else
+    {
       Console.WriteLine("Добро пожаловать в таверну");
       Console.WriteLine("Здесь вы можете восстановить здоровье своих воинов");
       UserInteraction.NewLine();
 
-      for (int i = 0; i < Food.Count; i++) {
-        Console.Write($"{i + 1}. ");
+      for (int i = 0; i < Food.Count; i++)
+      {
+        Console.Write($"{i + 1,-5}");
         this.Food[i].Print();
       }
 
       UserInteraction.NewLine();
-      Console.WriteLine($"У вас в распоряжении {this.GameInstance.ArmyLeader.Coins} золотых монет");
+      this.GameInstance.ArmyLeader.PrintCoins();
+
+      UserInteraction.NewLine();
+      this.GameInstance.Army.PrintList(WithNumber: false);
     }
   }
 

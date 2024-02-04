@@ -1,6 +1,8 @@
 ﻿namespace TextyDungeon.Scenes;
 
 using TextyDungeon.Creatures.Warriors;
+using TextyDungeon.Objects.Equipment.Armor;
+using TextyDungeon.Objects.Equipment.Weapon;
 using TextyDungeon.Utils;
 
 
@@ -23,9 +25,9 @@ internal class BarracksScene : IScene
   /// Список функций создающий воинов
   /// </summary>
   private List<Func<IWarrior>> WarriorsCreator = new() {
-    () => new CommonWarrior(),
-    () => new LightweightWarrior(),
-    () => new HeavyweightWarrior(),
+    () => new CommonWarrior(StringGenerator.GetRandomHumanName(), new CommonSword(), new LightweightBreastplate(), 80),
+    () => new CommonWarrior(StringGenerator.GetRandomHumanName(), new CommonSword(), new CommonBreastplate(), 100),
+    () => new CommonWarrior(StringGenerator.GetRandomHumanName(), new CommonSword(), new HeavyweightBreastplate(), 125),
   };
 
   /// <summary>
@@ -38,10 +40,13 @@ internal class BarracksScene : IScene
   /// Инициализировать сцену
   /// </summary>
   /// <param name="GameInstance">Объект игры</param>
-  public BarracksScene(Game GameInstance) : base(GameInstance) => this.FillWarriors();
+  public BarracksScene(Game GameInstance) : base(GameInstance) => this.RefillWarriors();
 
 
-  private void FillWarriors()
+  /// <summary>
+  /// Заполнить список войнов, доступных для найма
+  /// </summary>
+  private void RefillWarriors()
   {
     this.AvailableWarriors.Clear();
 
@@ -58,7 +63,8 @@ internal class BarracksScene : IScene
     UserInteraction.WriteBlueLine(this.GameInstance.ArmyLeader.Name);
     UserInteraction.NewLine();
 
-    if (this.AvailableWarriors.Empty) this.FillWarriors();
+    if (this.AvailableWarriors.Empty)
+      this.RefillWarriors();
   }
 
   /// <summary>
@@ -69,17 +75,20 @@ internal class BarracksScene : IScene
     Console.Clear();
     int? UserIntInput = Utils.ConvertToInt(UserInput, "Номер воина должен быть числом");
 
-    if (UserIntInput == null) return;
+    if (UserIntInput == null)
+      return;
     UserIntInput--;
 
-    if (UserIntInput < 0 || UserIntInput >= this.AvailableWarriors.Count) {
+    if (UserIntInput < 0 || UserIntInput >= this.AvailableWarriors.Count)
+    {
       UserInteraction.WriteErrorTop("Боюсь у меня нет такого бойца");
       return;
     }
 
     IWarrior WarriorToBuy = this.AvailableWarriors[(int)UserIntInput];
 
-    if (WarriorToBuy.HireCost > this.GameInstance.ArmyLeader.Coins) {
+    if (WarriorToBuy.HireCost > this.GameInstance.ArmyLeader.Coins)
+    {
       UserInteraction.WriteErrorTop("Сэр, вам не хватает золотых монет для найма этого бойца, возвращайтесь позже, когда собирете больше");
       return;
     }
@@ -94,7 +103,8 @@ internal class BarracksScene : IScene
   /// </summary>
   public override void PrintAcions()
   {
-    if (this.AvailableWarriors.Count == 0) {
+    if (this.AvailableWarriors.Count == 0)
+    {
       Console.WriteLine("Сейчас у меня нет воинов, которые подошли бы твоему гарнизону");
       return;
     }
@@ -103,8 +113,7 @@ internal class BarracksScene : IScene
     this.AvailableWarriors.PrintCostList();
 
     UserInteraction.NewLine();
-    Console.WriteLine("А у вас в гарнизоне:");
-    this.GameInstance.Army.PrintList(false);
+    this.GameInstance.Army.PrintList(WithNumber: false);
   }
 
   /// <summary>

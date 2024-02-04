@@ -8,5 +8,5 @@ using TextyDungeon.Utils;
 /// </summary>
 internal class Zombie : IEnemy
 {
-  public Zombie() : base("Зомби", "", new SRange(20, 35)) { }
+  public Zombie() : base("Зомби", "", new SRange(20, 35), 90) { }
 }

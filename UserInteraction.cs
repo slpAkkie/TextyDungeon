@@ -94,10 +94,22 @@ internal static class UserInteraction
   public static void WriteBlue(string Str) => WriteColorLine(Str, ConsoleColor.Blue, false);
 
   /// <summary>
-  /// Вывести строку с оформлением ошибки и двумя пустыми строками снизу
+  /// Вывести строку с оформлением информационного сообщения
   /// </summary>
   /// <param name="Str">Строка для вывода</param>
-  public static void WriteErrorTop(string Str)
+  public static void WriteYellowLine(string Str) => WriteColorLine(Str, ConsoleColor.DarkYellow);
+
+  /// <summary>
+  /// Вывести строку с оформлением информационного сообщения
+  /// </summary>
+  /// <param name="Str">Строка для вывода</param>
+  public static void WriteYellow(string Str) => WriteColorLine(Str, ConsoleColor.DarkYellow, false);
+
+    /// <summary>
+    /// Вывести строку с оформлением ошибки и двумя пустыми строками снизу
+    /// </summary>
+    /// <param name="Str">Строка для вывода</param>
+    public static void WriteErrorTop(string Str)
   {
     WriteRedLine(Str);
     NewLine(2);

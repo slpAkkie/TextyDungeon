@@ -11,7 +11,7 @@ internal abstract class ICreature : IGameObject
   /// <summary>
   /// Максимальное значение злоровья
   /// </summary>
-  protected const double MAX_HP = 100.0;
+  protected double MaxHP;
 
   /// <summary>
   /// Минимальное значение злоровья
@@ -40,7 +40,7 @@ internal abstract class ICreature : IGameObject
   public double HP
   {
     get => this._HP;
-    protected set => this._HP = value < MIN_HP ? MIN_HP : value > MAX_HP ? MAX_HP : Math.Round(value, 2);
+    protected set => this._HP = value < MIN_HP ? MIN_HP : value > this.MaxHP ? this.MaxHP : Math.Round(value, 2);
   }
 
 
@@ -49,5 +49,8 @@ internal abstract class ICreature : IGameObject
   /// </summary>
   /// <param name="Name">Название существа</param>
   /// <param name="Description">Описание</param>
-  public ICreature(string Name, string Description) : base(Name, Description) => this.HP = MAX_HP;
+  public ICreature(string Name, string Description, double MaxHP = 100.0) : base(Name, Description)
+  {
+    this.HP = this.MaxHP = MaxHP;
+  }
 }

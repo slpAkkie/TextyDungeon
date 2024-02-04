@@ -27,11 +27,10 @@ internal abstract class IArmor : IEquipment
   /// </summary>
   public override void Print()
   {
-    UserInteraction.WriteBlue(this.Name);
-    Console.Write(" / Защита ");
-    UserInteraction.WriteGreen($"{this.ProtectionRate.ToString().Replace(',', '.')}");
-    Console.Write(", стоимость ");
-    UserInteraction.WriteGreen($"{this.Cost} золотых монет");
-    Console.WriteLine($". ({this.Description})");
+    UserInteraction.WriteBlue(this.Name.PadRight(32));
+    Console.Write($"{this.ProtectionRate.ToString().Replace(',', '.'), 4} DEF");
+    Console.Write(" | ");
+    UserInteraction.WriteYellow($"{this.Cost}G");
+    Console.WriteLine($" | {this.Description}");
   }
 }

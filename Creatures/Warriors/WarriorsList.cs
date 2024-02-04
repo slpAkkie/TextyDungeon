@@ -76,33 +76,49 @@ internal class WarriorsList
   /// <param name="Warrior"></param>
   private void PrintWithLifeStatus(IWarrior Warrior)
   {
-    Console.Write($"{Warrior.Name} (");
-    UserInteraction.WriteRed($"{Warrior.HP} HP");
-    Console.Write(") : ");
-    if (Warrior.IsAlive) UserInteraction.WriteGreenLine("Готов к сражению");
-    else UserInteraction.WriteRedLine("Умер");
+    if (Warrior.IsAlive)
+      Console.Write($"{Warrior.Name,-32}");
+    else
+      UserInteraction.WriteRed($"{Warrior.Name,-32}");
+
+    if (Warrior.IsAlive)
+    {
+      UserInteraction.WriteRed($"{Warrior.HP.ToString().Replace(',', '.'),6} HP");
+      Console.Write(" | ");
+      Console.Write($"{Warrior.Armor.ToString().Replace(',', '.'),4} DEF");
+      Console.Write(" | ");
+      UserInteraction.WriteBlue($"{Warrior.Weapon.DamageRange.MinValue,3}-{Warrior.Weapon.DamageRange.MaxValue,-3} ATK");
+    }
+    UserInteraction.NewLine();
   }
 
   /// <summary>
-  /// Вывести информацию о воине вместе с его показателем жизни
+  /// Вывести информацию о воине со стоимостью найма
   /// </summary>
   /// <param name="Warrior"></param>
-  private void PrintWithCostStatus(IWarrior Warrior)
+  private void PrintWithHireStatus(IWarrior Warrior)
   {
-    Console.Write($"{Warrior.Name} : ");
-    UserInteraction.WriteGreen($"Показатель брони: {Warrior.Armor.ToString().Replace(',', '.')}");
-    Console.Write(" : ");
-    UserInteraction.WriteBlueLine($"{Warrior.HireCost} монет");
+    Console.Write($"{Warrior.Name,-32}");
+    Console.Write($"{Warrior.Armor.ToString().Replace(',', '.'),4} DEF");
+    Console.Write(" | ");
+    UserInteraction.WriteBlue($"{Warrior.Weapon.DamageRange.MinValue,3}-{Warrior.Weapon.DamageRange.MaxValue,-3} ATK");
+    Console.Write(" | ");
+    UserInteraction.WriteYellowLine($"{Warrior.HireCost}G");
   }
 
   /// <summary>
   /// Вывести гарнизон со статусом здоровья
   /// </summary>
-  public void PrintList(bool WithNumber = true)
+  public void PrintList(string Header = "Ваш гарнизон:", bool WithNumber = true)
   {
-    for (int i = 0; i < this.Warriors.Count; i++) {
-      if (WithNumber) Console.Write($"{i + 1}. ");
-      else UserInteraction.WriteBlue("> ");
+    Console.WriteLine(Header);
+
+    for (int i = 0; i < this.Warriors.Count; i++)
+    {
+      if (WithNumber)
+        Console.Write($"{i + 1,-5}");
+      else
+        UserInteraction.WriteBlue("> ".PadRight(5));
       this.PrintWithLifeStatus(this.Warriors[i]);
     }
   }
@@ -112,9 +128,10 @@ internal class WarriorsList
   /// </summary>
   public void PrintCostList()
   {
-    for (int i = 0; i < this.Warriors.Count; i++) {
-      Console.Write($"{i + 1}. ");
-      this.PrintWithCostStatus(this.Warriors[i]);
+    for (int i = 0; i < this.Warriors.Count; i++)
+    {
+      Console.Write($"{i + 1,-5}");
+      this.PrintWithHireStatus(this.Warriors[i]);
     }
   }
 }

@@ -4,8 +4,7 @@
 /// <summary>
 /// Генерал карнизона
 /// </summary>
-internal class Leader
-{
+internal class Leader {
   /// <summary>
   /// Имя Генерала по умолчанию
   /// </summary>
@@ -50,8 +49,7 @@ internal class Leader
   /// </summary>
   public void PrintCoins()
   {
-    Console.Write("У вас в распоряжении ");
-    UserInteraction.WriteGreen($"{this.Coins} монет");
-    Console.WriteLine(".");
+    Console.Write("В казне: ");
+    UserInteraction.WriteYellow($"{this.Coins}G");
   }
 }

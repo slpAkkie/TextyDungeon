@@ -26,11 +26,10 @@ internal abstract class IFood : IBuyableGameObject
   /// </summary>
   public void Print()
   {
-    UserInteraction.WriteBlue(this.Name);
-    Console.Write(" / Восстанавливает ");
-    UserInteraction.WriteGreen($"{this.HillAmount} HP");
-    Console.Write(", стоимость ");
-    UserInteraction.WriteGreen($"{this.Cost} золотых монет");
-    Console.WriteLine($". ({this.Description})");
+    UserInteraction.WriteBlue(this.Name.PadRight(32));
+    UserInteraction.WriteRed($"{this.HillAmount,6} HP");
+    Console.Write(" | ");
+    UserInteraction.WriteYellow($"{this.Cost}G");
+    Console.WriteLine($" | {this.Description}");
   }
 }

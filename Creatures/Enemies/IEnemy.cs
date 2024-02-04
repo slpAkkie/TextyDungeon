@@ -47,7 +47,7 @@ internal abstract class IEnemy : ICreature
   /// <summary>
   /// Инициализация противника с указанием диапазона урона
   /// </summary>
-  public IEnemy(string Name, string Description, SRange? DamageRange = null, int Level = 1) : base(Name, Description)
+  public IEnemy(string Name, string Description, SRange? DamageRange = null, double MaxHP = 100.0, int Level = 1) : base(Name, Description, MaxHP)
   {
     this.DamageRange = DamageRange ?? this.DEFAULT_DAMAGE_RANGE;
     this.Level = Level;
@@ -63,5 +63,16 @@ internal abstract class IEnemy : ICreature
     this.HP -= Damage;
 
     return this.IsAlive;
+  }
+
+  /// <summary>
+  /// Вывести информацию о враге
+  /// </summary>
+  public void Print()
+  {
+    UserInteraction.WriteBlue(this.Name.PadRight(32));
+    UserInteraction.WriteRed($"{this.HP,6} HP");
+    Console.Write(" | ");
+    UserInteraction.WriteRedLine($"{this.DamageRange.MinValue,2}-{this.DamageRange.MaxValue,-2} ATK");
   }
 }

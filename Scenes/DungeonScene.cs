@@ -43,6 +43,7 @@ internal class DungeonScene : IScene
     () => new Skeleton(),
     () => new Zombie(),
     () => new Dragon(),
+    () => new Slime(),
   };
 
   /// <summary>
@@ -68,7 +69,8 @@ internal class DungeonScene : IScene
   /// </summary>
   public override void Start()
   {
-    if (!this.PreserveEnemyRefill) {
+    if (!this.PreserveEnemyRefill)
+    {
       this.AvailableEnemies.Clear();
       for (int i = 0; i < 3; i++)
         this.AvailableEnemies.Add(this.EnemiesCreatorList[new Random().Next(0, this.EnemiesCreatorList.Count)]());
@@ -88,10 +90,12 @@ internal class DungeonScene : IScene
     Console.Clear();
     int? UserIntInput = Utils.ConvertToInt(UserInput, "Номер врага должен быть числом");
 
-    if (UserIntInput == null) return;
+    if (UserIntInput == null)
+      return;
     UserIntInput--;
 
-    if (UserIntInput < 0 || UserIntInput >= this.AvailableEnemies.Count) {
+    if (UserIntInput < 0 || UserIntInput >= this.AvailableEnemies.Count)
+    {
       UserInteraction.WriteRedLine($"Вы не можете выбрать {UserIntInput + 1} врага");
       return;
     }
@@ -109,19 +113,28 @@ internal class DungeonScene : IScene
   {
     this.AvailableEnemies.Remove(Enemy);
 
-    if (this.AvailableEnemies.Empty()) {
+    if (this.AvailableEnemies.Empty())
+    {
       this.GameInstance.ArmyLeader.ChangeCoins((int)this.WinCost);
 
-      this.GameInstance.SelectScene(this, delegate () {
+      this.GameInstance.SelectScene(this, delegate ()
+      {
         UserInteraction.WriteGreenLine("Подземелье зачищено");
-        Console.Write("Награда за прохождение подземелья: ");
-        UserInteraction.WriteGreen($"{this.WinCost}");
-        Console.WriteLine(" монет.");
-        this.GameInstance.ArmyLeader.PrintCoins();
+        UserInteraction.NewLine();
 
-        Console.WriteLine("Идем в следующее подземелье");
+        Console.Write("Получено: ");
+        UserInteraction.WriteYellowLine($"{Enemy.WinCost}G");
+
+        Console.Write("Награда за прохождение подземелья: ");
+        UserInteraction.WriteYellowLine($"{this.WinCost}G");
+
+        this.GameInstance.ArmyLeader.PrintCoins();
+        UserInteraction.NewLine();
+
+        Console.WriteLine("Идем в следующее подземелье...");
         UserInteraction.NewLine();
       });
+
       this.CloseScene = true;
     }
   }
@@ -131,14 +144,10 @@ internal class DungeonScene : IScene
   /// </summary>
   public void PrintAvailableEnemies()
   {
-    for (int i = 0; i < this.AvailableEnemies.Count; i++) {
-      Console.Write($"{i + 1}. ");
-      UserInteraction.WriteBlue(this.AvailableEnemies[i].Name);
-      Console.Write(" (HP: ");
-      UserInteraction.WriteRed(this.AvailableEnemies[i].HP.ToString());
-      Console.Write(", Урон: ");
-      UserInteraction.WriteRed($"{this.AvailableEnemies[i].DamageRange.MinValue}-{this.AvailableEnemies[i].DamageRange.MaxValue}");
-      Console.WriteLine(")");
+    for (int i = 0; i < this.AvailableEnemies.Count; i++)
+    {
+      Console.Write($"{i + 1,-5}");
+      this.AvailableEnemies[i].Print();
     }
   }
 
@@ -149,6 +158,9 @@ internal class DungeonScene : IScene
   {
     Console.WriteLine("Вы пришли в подземелье и видите перед собой несколько врагов:");
     this.PrintAvailableEnemies();
+
+    UserInteraction.NewLine();
+    this.GameInstance.Army.PrintList(WithNumber: false);
   }
 
   /// <summary>

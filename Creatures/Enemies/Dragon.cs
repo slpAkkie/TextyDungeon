@@ -8,5 +8,5 @@ using TextyDungeon.Utils;
 /// </summary>
 internal class Dragon : IEnemy
 {
-  public Dragon() : base("Дракон", "", new SRange(55, 70)) { }
+  public Dragon() : base("Дракон", "", new SRange(40, 55)) { }
 }

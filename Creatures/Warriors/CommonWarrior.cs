@@ -9,5 +9,5 @@ using TextyDungeon.Objects.Equipment.Weapon;
 /// </summary>
 internal class CommonWarrior : IWarrior
 {
-  public CommonWarrior() : base("Обычный воин", "", new CommonSword(), 80) => this.BodyArmor = new CommonBreastplate();
+  public CommonWarrior(string Name, IWeapon Weapon, IArmor BodyArmor, int HireCost) : base(Name, Weapon, BodyArmor, HireCost) { }
 }
