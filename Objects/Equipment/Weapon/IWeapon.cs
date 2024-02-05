@@ -30,7 +30,7 @@ internal abstract class IWeapon : IEquipment
   public override void Print()
   {
     UserInteraction.WriteBlue(this.Name.PadRight(32));
-    UserInteraction.WriteRed($"{this.DamageRange.MinValue, 3}-{this.DamageRange.MaxValue, -3} ATK");
+    UserInteraction.WriteRed($"{this.DamageRange.MinValue, 2}-{this.DamageRange.MaxValue, -2} ATK");
     Console.Write(" | ");
     UserInteraction.WriteYellow($"{this.Cost}G");
     Console.WriteLine($" | {this.Description}");

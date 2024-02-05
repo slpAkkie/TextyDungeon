@@ -97,7 +97,7 @@ internal class ArmoryScene : IScene
   {
     Console.Clear();
 
-    if (UserInput.Trim().ToUpper() == "C")
+    if (UserInput.Trim().ToUpper() == "C" || UserInput.Trim().ToUpper() == "С")
     {
       if (this.WaitWarriorChoose)
       {
@@ -114,7 +114,7 @@ internal class ArmoryScene : IScene
         {
           this.GameInstance.ArmyLeader.ChangeCoins(-UPDATE_SHOP_COST);
           this.RefillArmory();
-        } 
+        }
       }
 
       return;
@@ -205,7 +205,9 @@ internal class ArmoryScene : IScene
       this.AvailableEquipment[(int)this.ChosenEquipmentIndex].Print();
       UserInteraction.NewLine();
 
-      Console.WriteLine("Теперь выберите какому войну отдать этот товар:");
+      Console.WriteLine("Теперь выберите какому войну отдать этот товар");
+      UserInteraction.NewLine();
+
       this.GameInstance.Army.PrintList();
       UserInteraction.NewLine();
 
@@ -236,7 +238,13 @@ internal class ArmoryScene : IScene
   /// <summary>
   /// Вывод сообщения (Приглашения пользователя к вводу)
   /// </summary>
-  public override void Prompt() => Console.WriteLine("Выберите что хотите купить");
+  public override void Prompt()
+  {
+    if (this.WaitWarriorChoose)
+      Console.WriteLine("Выберите война");
+    else
+      Console.WriteLine("Выберите что хотите купить");
+  }
 
   /// <summary>
   /// Выход со сцены

@@ -87,8 +87,9 @@ internal class WarriorsList
       Console.Write(" | ");
       Console.Write($"{Warrior.Armor.ToString().Replace(',', '.'),4} DEF");
       Console.Write(" | ");
-      UserInteraction.WriteBlue($"{Warrior.Weapon.DamageRange.MinValue,3}-{Warrior.Weapon.DamageRange.MaxValue,-3} ATK");
+      UserInteraction.WriteBlue($"{Warrior.Weapon.DamageRange.MinValue,2}-{Warrior.Weapon.DamageRange.MaxValue,-2} ATK");
     }
+
     UserInteraction.NewLine();
   }
 
@@ -101,7 +102,7 @@ internal class WarriorsList
     Console.Write($"{Warrior.Name,-32}");
     Console.Write($"{Warrior.Armor.ToString().Replace(',', '.'),4} DEF");
     Console.Write(" | ");
-    UserInteraction.WriteBlue($"{Warrior.Weapon.DamageRange.MinValue,3}-{Warrior.Weapon.DamageRange.MaxValue,-3} ATK");
+    UserInteraction.WriteBlue($"{Warrior.Weapon.DamageRange.MinValue,2}-{Warrior.Weapon.DamageRange.MaxValue,-2} ATK");
     Console.Write(" | ");
     UserInteraction.WriteYellowLine($"{Warrior.HireCost}G");
   }

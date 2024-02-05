@@ -50,6 +50,6 @@ internal class Leader {
   public void PrintCoins()
   {
     Console.Write("В казне: ");
-    UserInteraction.WriteYellow($"{this.Coins}G");
+    UserInteraction.WriteYellowLine($"{this.Coins}G");
   }
 }
